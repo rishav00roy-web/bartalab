@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { signOut } from "@/app/actions";
 import { initials } from "@/lib/format";
+import { LogOut, Newspaper, Users } from "./icons";
 import type { Profile } from "@/lib/types";
 
 export function TopBar({
@@ -23,11 +24,11 @@ export function TopBar({
         {profile.approved && (
           <nav className="topnav" aria-label="Main">
             <Link href="/" aria-current={current === "feed" ? "page" : undefined}>
-              Feed
+              <Newspaper /> Feed
             </Link>
             {isAdmin && (
               <Link href="/members" aria-current={current === "members" ? "page" : undefined}>
-                Members
+                <Users /> Members
                 {pendingCount > 0 && (
                   <span className="badge" aria-label={`${pendingCount} waiting for approval`}>
                     {pendingCount}
@@ -50,8 +51,8 @@ export function TopBar({
           {isAdmin && <span className="role-tag">Admin</span>}
         </Link>
         <form action={signOut}>
-          <button type="submit" className="btn btn-ghost btn-sm">
-            Sign out
+          <button type="submit" className="btn btn-ghost btn-sm" aria-label="Sign out">
+            <LogOut /> <span className="signout-label">Sign out</span>
           </button>
         </form>
       </div>

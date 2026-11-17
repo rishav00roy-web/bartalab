@@ -2,6 +2,7 @@
 
 import { useTransition } from "react";
 import { setPinned } from "@/app/actions";
+import { Pin } from "./icons";
 
 export function PinButton({ postId, pinned }: { postId: string; pinned: boolean }) {
   const [pending, startTransition] = useTransition();
@@ -12,7 +13,7 @@ export function PinButton({ postId, pinned }: { postId: string; pinned: boolean 
       disabled={pending}
       onClick={() => startTransition(async () => void (await setPinned(postId, !pinned)))}
     >
-      {pinned ? "Unpin" : "Pin"}
+      <Pin /> {pinned ? "Unpin" : "Pin"}
     </button>
   );
 }

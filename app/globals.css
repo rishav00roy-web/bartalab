@@ -838,7 +838,8 @@ h3 {
 }
 
 @media (max-width: 36rem) {
-  .brand-name {
+  .brand-name,
+  .signout-label {
     display: none;
   }
   .topnav {

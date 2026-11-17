@@ -5,7 +5,7 @@ import { updatePost } from "@/app/actions";
 import { hostOf, initials, timeAgo } from "@/lib/format";
 import { normalizeLink } from "@/lib/links";
 import { DeletePost } from "./DeletePost";
-import { LinkIcon } from "./icons";
+import { LinkIcon, Pencil } from "./icons";
 import { PinButton } from "./PinButton";
 
 type Props = {
@@ -82,7 +82,7 @@ export function PostMain({
           <span className="post-actions">
             <PinButton postId={postId} pinned={pinned} />
             <button type="button" className="btn btn-ghost btn-sm" onClick={() => setEditing(true)}>
-              Edit
+              <Pencil /> Edit
             </button>
             <DeletePost postId={postId} mediaPath={mediaPath} />
           </span>
