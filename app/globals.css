@@ -1,19 +1,19 @@
-/* Hallmark · shape: app screen · genre: modern-minimal · theme: custom (from the Bartalab logo: deep indigo, one orange signal) · signature: the announcement card, media set full width
+/* Hallmark · shape: app screen · genre: modern-minimal · theme: custom, light only (from the Bartalab logo: deep indigo, one orange signal) · signature: the announcement card, media set full width
  * critique: an internal feed must feel calm and trustworthy; indigo carries the chrome, orange marks only the primary action and your own reaction
  * scope: app · v2.0.0 */
 
 :root {
   --brand: #100b67;
   --brand-hover: #1e1890;
-  --brand-soft: #ecebf8;
+  --brand-soft: #f0effa;
   --signal: #f38023;
   --signal-ink: #8a3f00;
-  --bg: #f6f5fb;
+  --bg: #f9f9fd;
   --surface: #ffffff;
-  --surface-2: #faf9fe;
+  --surface-2: #fbfbfe;
   --text: #17153a;
   --muted: #5e5b7a;
-  --line: #e3e1ef;
+  --line: #e8e7f2;
   --danger: #b42318;
   --danger-soft: #fdecea;
   --on-brand: #ffffff;
@@ -36,27 +36,6 @@
   --fs-xl: 1.602rem;
 
   color-scheme: light;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --brand: #b9b4ff;
-    --brand-hover: #d2ceff;
-    --brand-soft: #24204f;
-    --signal: #ff9a45;
-    --signal-ink: #ffb77a;
-    --bg: #0e0c24;
-    --surface: #17143a;
-    --surface-2: #1c1944;
-    --text: #edecfb;
-    --muted: #a7a4c7;
-    --line: #2d2a5a;
-    --danger: #ff8a80;
-    --danger-soft: #3a1620;
-    --on-brand: #100b67;
-    --focus: #ff9a45;
-    color-scheme: dark;
-  }
 }
 
 *,
@@ -689,4 +668,27 @@ h3 {
   .react-btn .label {
     display: none;
   }
+}
+
+/* Post editing ------------------------------------------------------------- */
+.post-actions {
+  display: inline-flex;
+  gap: 0.25rem;
+}
+.post-edit {
+  padding: 0 1rem 1rem;
+  display: grid;
+  gap: 0.75rem;
+}
+.post-edit-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
+
+/* Error page --------------------------------------------------------------- */
+.error-page {
+  max-width: 44rem;
+  margin: 3rem auto;
+  padding: 0 1rem;
 }

@@ -79,3 +79,14 @@ export async function signOut() {
   await supabase.auth.signOut();
   redirect("/login");
 }
+
+export async function updatePost(postId: string, body: string, linkUrl: string | null) {
+  const { supabase } = await requireUser();
+  const { error } = await supabase
+    .from("posts")
+    .update({ body: body.trim(), link_url: linkUrl })
+    .eq("id", postId);
+  if (error) return { error: error.message };
+  revalidatePath("/");
+  return { error: null };
+}

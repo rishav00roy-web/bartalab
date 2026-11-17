@@ -4,6 +4,7 @@ import { useEffect, useId, useRef, useState, useTransition } from "react";
 import { createPost } from "@/app/actions";
 import { createClient } from "@/lib/supabase/client";
 import { initials } from "@/lib/format";
+import { normalizeLink } from "@/lib/links";
 import { ImageIcon, LinkIcon, X } from "./icons";
 
 const MAX_BYTES = 50 * 1024 * 1024;
@@ -49,14 +50,11 @@ export function Composer({ userId, name }: { userId: string; name: string }) {
     e.preventDefault();
     setError(null);
 
-    let linkUrl: string | null = null;
-    if (link.trim()) {
-      const raw = /^https?:\/\//i.test(link.trim()) ? link.trim() : `https://${link.trim()}`;
-      try {
-        linkUrl = new URL(raw).toString();
-      } catch {
-        return setError("That link doesn't look right. Check it and try again.");
-      }
+    let linkUrl: string | null;
+    try {
+      linkUrl = normalizeLink(link);
+    } catch {
+      return setError("That link doesn't look right. Check it and try again.");
     }
 
     startTransition(async () => {

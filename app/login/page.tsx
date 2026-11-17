@@ -55,7 +55,6 @@ export default function LoginPage() {
     <main className="auth">
       <div className="card auth-card">
         <picture>
-          <source srcSet="/logo-wordmark-dark.png" media="(prefers-color-scheme: dark)" />
           <img src="/logo-wordmark.png" alt="Bartalab" width={1380} height={370} className="auth-logo" />
         </picture>
         <h1>{signup ? "Create your account" : "Sign in"}</h1>

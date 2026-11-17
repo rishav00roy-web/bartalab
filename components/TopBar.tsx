@@ -9,7 +9,6 @@ export function TopBar({ profile }: { profile: Profile }) {
       <div className="topbar-inner">
         <Link href="/" className="brand" aria-label="Bartalab home">
           <picture>
-            <source srcSet="/mark-dark.png" media="(prefers-color-scheme: dark)" />
             <img src="/mark.png" alt="" width={32} height={32} />
           </picture>
           Bartalab

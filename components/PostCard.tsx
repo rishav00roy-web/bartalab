@@ -1,8 +1,7 @@
-import { hostOf, initials, mediaUrl, timeAgo } from "@/lib/format";
+import { mediaUrl } from "@/lib/format";
 import type { Post, ReactionKind } from "@/lib/types";
 import { Comments } from "./Comments";
-import { DeletePost } from "./DeletePost";
-import { LinkIcon } from "./icons";
+import { PostMain } from "./PostMain";
 import { Reactions } from "./Reactions";
 
 export function PostCard({
@@ -26,32 +25,15 @@ export function PostCard({
 
   return (
     <article className="card post" aria-labelledby={`p-${post.id}`}>
-      <header className="post-head">
-        <span className="avatar" aria-hidden="true">
-          {initials(authorName)}
-        </span>
-        <div className="post-meta">
-          <span className="post-author" id={`p-${post.id}`}>
-            {authorName}
-          </span>
-          <time className="post-time" dateTime={post.created_at}>
-            {timeAgo(post.created_at)}
-          </time>
-        </div>
-        {isAdmin && <DeletePost postId={post.id} mediaPath={post.media_path} />}
-      </header>
-
-      {post.body && <div className="post-body">{post.body}</div>}
-
-      {post.link_url && (
-        <a className="post-link" href={post.link_url} target="_blank" rel="noopener noreferrer">
-          <LinkIcon size={20} />
-          <span>
-            <strong>{hostOf(post.link_url)}</strong>
-            <small>{post.link_url}</small>
-          </span>
-        </a>
-      )}
+      <PostMain
+        postId={post.id}
+        authorName={authorName}
+        createdAt={post.created_at}
+        body={post.body}
+        linkUrl={post.link_url}
+        mediaPath={post.media_path}
+        isAdmin={isAdmin}
+      />
 
       {post.media_path && (
         <div className="post-media">
