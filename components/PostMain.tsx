@@ -6,6 +6,7 @@ import { hostOf, initials, timeAgo } from "@/lib/format";
 import { normalizeLink } from "@/lib/links";
 import { DeletePost } from "./DeletePost";
 import { LinkIcon } from "./icons";
+import { PinButton } from "./PinButton";
 
 type Props = {
   postId: string;
@@ -14,11 +15,21 @@ type Props = {
   body: string;
   linkUrl: string | null;
   mediaPath: string | null;
+  pinned: boolean;
   isAdmin: boolean;
 };
 
 // Post header, text and link. Admins can edit text and link in place.
-export function PostMain({ postId, authorName, createdAt, body, linkUrl, mediaPath, isAdmin }: Props) {
+export function PostMain({
+  postId,
+  authorName,
+  createdAt,
+  body,
+  linkUrl,
+  mediaPath,
+  pinned,
+  isAdmin,
+}: Props) {
   const [editing, setEditing] = useState(false);
   const [draft, setDraft] = useState(body);
   const [draftLink, setDraftLink] = useState(linkUrl ?? "");
@@ -62,12 +73,14 @@ export function PostMain({ postId, authorName, createdAt, body, linkUrl, mediaPa
           <span className="post-author" id={`p-${postId}`}>
             {authorName}
           </span>
-          <time className="post-time" dateTime={createdAt}>
-            {timeAgo(createdAt)}
-          </time>
+          <span className="post-time">
+            <time dateTime={createdAt}>{timeAgo(createdAt)}</time>
+            {pinned && <span className="pin-tag">Pinned</span>}
+          </span>
         </div>
         {isAdmin && !editing && (
           <span className="post-actions">
+            <PinButton postId={postId} pinned={pinned} />
             <button type="button" className="btn btn-ghost btn-sm" onClick={() => setEditing(true)}>
               Edit
             </button>

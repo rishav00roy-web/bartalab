@@ -1,7 +1,9 @@
 export type Role = "admin" | "member";
 export type ReactionKind = "like" | "celebrate" | "insightful";
 
-export type Profile = { id: string; full_name: string; role: Role };
+export type Profile = { id: string; full_name: string; role: Role; approved: boolean };
+
+export type Member = Profile & { created_at: string };
 
 export type Comment = {
   id: string;
@@ -16,6 +18,7 @@ export type Post = {
   link_url: string | null;
   media_path: string | null;
   media_type: "image" | "video" | null;
+  pinned: boolean;
   created_at: string;
   author: { id: string; full_name: string } | null;
   comments: Comment[];

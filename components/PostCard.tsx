@@ -24,7 +24,7 @@ export function PostCard({
   const authorName = post.author?.full_name ?? "Admin";
 
   return (
-    <article className="card post" aria-labelledby={`p-${post.id}`}>
+    <article className={post.pinned ? "card post is-pinned" : "card post"} aria-labelledby={`p-${post.id}`}>
       <PostMain
         postId={post.id}
         authorName={authorName}
@@ -32,6 +32,7 @@ export function PostCard({
         body={post.body}
         linkUrl={post.link_url}
         mediaPath={post.media_path}
+        pinned={post.pinned}
         isAdmin={isAdmin}
       />
 

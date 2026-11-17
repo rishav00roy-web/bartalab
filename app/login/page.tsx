@@ -6,7 +6,7 @@ import { createClient } from "@/lib/supabase/client";
 
 export default function LoginPage() {
   const router = useRouter();
-  const [mode, setMode] = useState<"signin" | "signup">("signin");
+  const [mode, setMode] = useState<"signin" | "signup" | "forgot">("signin");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -20,6 +20,17 @@ export default function LoginPage() {
     setNotice(null);
     setBusy(true);
     const supabase = createClient();
+
+    if (mode === "forgot") {
+      const { error } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: `${window.location.origin}/auth/callback?next=/reset-password`,
+      });
+      setBusy(false);
+      if (error) return setError(error.message);
+      setNotice("If that email has an account, a reset link is on its way.");
+      setMode("signin");
+      return;
+    }
 
     if (mode === "signin") {
       const { error } = await supabase.auth.signInWithPassword({ email, password });
@@ -50,6 +61,7 @@ export default function LoginPage() {
   }
 
   const signup = mode === "signup";
+  const forgot = mode === "forgot";
 
   return (
     <main className="auth">
@@ -57,7 +69,7 @@ export default function LoginPage() {
         <picture>
           <img src="/logo-wordmark.png" alt="Bartalab" width={1380} height={370} className="auth-logo" />
         </picture>
-        <h1>{signup ? "Create your account" : "Sign in"}</h1>
+        <h1>{signup ? "Create your account" : forgot ? "Reset your password" : "Sign in"}</h1>
         <p className="lede">News and updates from your organization.</p>
 
         <form className="auth-form" onSubmit={submit}>
@@ -86,6 +98,7 @@ export default function LoginPage() {
               onChange={(e) => setEmail(e.target.value)}
             />
           </div>
+          {!forgot && (
           <div className="field">
             <label htmlFor="password">Password</label>
             <input
@@ -98,7 +111,21 @@ export default function LoginPage() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
+            {!signup && (
+              <button
+                type="button"
+                className="link-btn forgot-link"
+                onClick={() => {
+                  setMode("forgot");
+                  setError(null);
+                  setNotice(null);
+                }}
+              >
+                Forgot password?
+              </button>
+            )}
           </div>
+          )}
 
           {error && (
             <p className="error" role="alert">
@@ -112,21 +139,21 @@ export default function LoginPage() {
           )}
 
           <button type="submit" className="btn btn-primary" disabled={busy}>
-            {busy ? "Please wait…" : signup ? "Create account" : "Sign in"}
+            {busy ? "Please wait…" : signup ? "Create account" : forgot ? "Send reset link" : "Sign in"}
           </button>
         </form>
 
         <p className="auth-switch">
-          {signup ? "Already have an account? " : "New here? "}
+          {signup || forgot ? "Already have an account? " : "New here? "}
           <button
             type="button"
             className="link-btn"
             onClick={() => {
-              setMode(signup ? "signin" : "signup");
+              setMode(signup || forgot ? "signin" : "signup");
               setError(null);
             }}
           >
-            {signup ? "Sign in" : "Create an account"}
+            {signup || forgot ? "Sign in" : "Create an account"}
           </button>
         </p>
       </div>

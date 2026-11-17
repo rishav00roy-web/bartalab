@@ -6,11 +6,19 @@ Built with Next.js 15 (App Router) and Supabase (auth, Postgres with row-level s
 
 ## How permissions work
 
-- The **first account** that signs up becomes the admin. Everyone after that is a member.
+- The **first account** that signs up becomes the admin. Everyone after that is a member who must be **approved by an admin** (Members page) before they can see anything.
 - Only admins can create or delete posts and upload media (enforced by database policies, not just the UI).
 - Members can react (one reaction per post) and comment. People can delete their own comments; admins can delete any.
-- To make someone else an admin, run in the Supabase SQL editor:
-  `update profiles set role = 'admin' where id = (select id from auth.users where email = 'person@example.com');`
+- Admins approve sign-ups, make other admins, or remove access on the Members page.
+- Admins can edit, pin and delete posts. Pinned posts stay at the top of the feed.
+- Everyone can change their name and password on the Profile page.
+- The feed updates live when someone posts, comments or reacts.
+
+## Email
+
+Supabase's built-in email only delivers to the project owner's address, so "Confirm email" is turned off
+and password-reset emails only work after you add your own SMTP provider
+(Supabase > Authentication > Emails > SMTP settings, e.g. Resend or Brevo free tiers).
 
 ## Running locally
 

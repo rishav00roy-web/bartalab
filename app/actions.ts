@@ -90,3 +90,34 @@ export async function updatePost(postId: string, body: string, linkUrl: string |
   revalidatePath("/");
   return { error: null };
 }
+
+export async function setPinned(postId: string, pinned: boolean) {
+  const { supabase } = await requireUser();
+  const { error } = await supabase.from("posts").update({ pinned }).eq("id", postId);
+  if (error) return { error: error.message };
+  revalidatePath("/");
+  return { error: null };
+}
+
+export async function setMember(target: string, role: "admin" | "member", approved: boolean) {
+  const { supabase } = await requireUser();
+  const { error } = await supabase.rpc("admin_set_member", {
+    target,
+    new_role: role,
+    new_approved: approved,
+  });
+  if (error) return { error: error.message };
+  revalidatePath("/members");
+  revalidatePath("/");
+  return { error: null };
+}
+
+export async function updateName(fullName: string) {
+  const { supabase, user } = await requireUser();
+  const name = fullName.trim();
+  if (name.length < 2) return { error: "Enter your full name." };
+  const { error } = await supabase.from("profiles").update({ full_name: name }).eq("id", user.id);
+  if (error) return { error: error.message };
+  revalidatePath("/", "layout");
+  return { error: null };
+}
