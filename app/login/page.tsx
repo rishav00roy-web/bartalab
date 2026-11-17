@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { createClient } from "@/lib/supabase/client";
@@ -55,14 +54,10 @@ export default function LoginPage() {
   return (
     <main className="auth">
       <div className="card auth-card">
-        <Image
-          src="/logo-wordmark.png"
-          alt="Bartalab"
-          width={1380}
-          height={370}
-          className="auth-logo"
-          priority
-        />
+        <picture>
+          <source srcSet="/logo-wordmark-dark.png" media="(prefers-color-scheme: dark)" />
+          <img src="/logo-wordmark.png" alt="Bartalab" width={1380} height={370} className="auth-logo" />
+        </picture>
         <h1>{signup ? "Create your account" : "Sign in"}</h1>
         <p className="lede">News and updates from your organization.</p>
 
