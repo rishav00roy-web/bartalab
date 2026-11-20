@@ -50,7 +50,7 @@ export function ProfileForm({ name, email }: { name: string; email: string }) {
             onChange={(e) => setFullName(e.target.value)}
           />
         </div>
-        <button type="submit" className="btn btn-primary" disabled={pending || fullName.trim() === name}>
+        <button type="submit" className="btn btn-primary" disabled={pending || fullName.trim() === name} aria-busy={pending}>
           Save name
         </button>
       </form>
@@ -69,7 +69,7 @@ export function ProfileForm({ name, email }: { name: string; email: string }) {
             onChange={(e) => setPassword(e.target.value)}
           />
         </div>
-        <button type="submit" className="btn btn-outline" disabled={pending || password.length < 6}>
+        <button type="submit" className="btn btn-outline" disabled={pending || password.length < 6} aria-busy={pending}>
           Change password
         </button>
       </form>

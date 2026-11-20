@@ -44,6 +44,7 @@ export function MemberRow({ member, isSelf }: { member: Member; isSelf: boolean 
               type="button"
               className="btn btn-primary btn-sm"
               disabled={pending}
+              aria-busy={pending}
               onClick={() => run("member", true)}
             >
               Approve
@@ -54,6 +55,7 @@ export function MemberRow({ member, isSelf }: { member: Member; isSelf: boolean 
                 type="button"
                 className="btn btn-outline btn-sm"
                 disabled={pending}
+                aria-busy={pending}
                 onClick={() => run("admin", true)}
               >
                 Make admin
@@ -62,6 +64,7 @@ export function MemberRow({ member, isSelf }: { member: Member; isSelf: boolean 
                 type="button"
                 className="btn btn-ghost btn-sm"
                 disabled={pending}
+                aria-busy={pending}
                 onClick={() => run("member", false)}
               >
                 Remove access
@@ -72,6 +75,7 @@ export function MemberRow({ member, isSelf }: { member: Member; isSelf: boolean 
               type="button"
               className="btn btn-outline btn-sm"
               disabled={pending}
+              aria-busy={pending}
               onClick={() => run("member", true)}
             >
               Make member

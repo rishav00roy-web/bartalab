@@ -123,7 +123,7 @@ export function PostMain({
             <button type="button" className="btn btn-outline btn-sm" onClick={cancel} disabled={pending}>
               Cancel
             </button>
-            <button type="submit" className="btn btn-primary btn-sm" disabled={pending}>
+            <button type="submit" className="btn btn-primary btn-sm" disabled={pending} aria-busy={pending}>
               {pending ? "Saving…" : "Save changes"}
             </button>
           </div>
@@ -133,7 +133,7 @@ export function PostMain({
           {body && <div className="post-body">{body}</div>}
           {linkUrl && (
             <a className="post-link" href={linkUrl} target="_blank" rel="noopener noreferrer">
-              <LinkIcon size={20} />
+              <LinkIcon />
               <span>
                 <strong>{hostOf(linkUrl)}</strong>
                 <small>{linkUrl}</small>

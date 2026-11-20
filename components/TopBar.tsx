@@ -48,7 +48,6 @@ export function TopBar({
             {initials(profile.full_name)}
           </span>
           <span className="name">{profile.full_name}</span>
-          {isAdmin && <span className="role-tag">Admin</span>}
         </Link>
         <form action={signOut}>
           <button type="submit" className="btn btn-ghost btn-sm" aria-label="Sign out">
