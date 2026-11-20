@@ -45,7 +45,7 @@ export default function ResetPasswordPage() {
               {error}
             </p>
           )}
-          <button type="submit" className="btn btn-primary" disabled={busy}>
+          <button type="submit" className="btn btn-primary" disabled={busy} aria-busy={busy}>
             {busy ? "Saving…" : "Save password"}
           </button>
         </form>

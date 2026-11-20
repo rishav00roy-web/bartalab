@@ -101,9 +101,10 @@ export function Comments({
           type="submit"
           className="btn btn-primary"
           disabled={pending || !text.trim()}
+          aria-busy={pending}
           aria-label="Post comment"
         >
-          <Send />
+          {!pending && <Send />}
         </button>
       </form>
       {error && (

@@ -19,8 +19,6 @@ export function PostCard({
     counts[r.kind] += 1;
     if (r.user_id === userId) mine = r.kind;
   }
-  const total = post.reactions.length;
-  const commentCount = post.comments.length;
   const authorName = post.author?.full_name ?? "Admin";
 
   return (
@@ -44,15 +42,6 @@ export function PostCard({
             // eslint-disable-next-line @next/next/no-img-element
             <img src={mediaUrl(post.media_path)} alt={post.body ? post.body.slice(0, 120) : "Post picture"} loading="lazy" />
           )}
-        </div>
-      )}
-
-      {(total > 0 || commentCount > 0) && (
-        <div className="post-stats">
-          <span>{total > 0 ? `${total} ${total === 1 ? "reaction" : "reactions"}` : ""}</span>
-          <span>
-            {commentCount > 0 ? `${commentCount} ${commentCount === 1 ? "comment" : "comments"}` : ""}
-          </span>
         </div>
       )}
 

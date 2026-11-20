@@ -17,7 +17,7 @@ export function DeletePost({ postId, mediaPath }: { postId: string; mediaPath: s
     );
   }
   return (
-    <span style={{ display: "inline-flex", gap: "0.25rem" }}>
+    <span className="confirm-actions">
       <button
         type="button"
         className="btn btn-outline btn-sm"
@@ -28,8 +28,9 @@ export function DeletePost({ postId, mediaPath }: { postId: string; mediaPath: s
       </button>
       <button
         type="button"
-        className="btn btn-primary btn-sm"
+        className="btn btn-danger btn-sm"
         disabled={pending}
+        aria-busy={pending}
         onClick={() => startTransition(async () => void (await deletePost(postId, mediaPath)))}
       >
         {pending ? "Deleting…" : "Delete post"}
