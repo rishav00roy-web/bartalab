@@ -85,6 +85,8 @@ export function Composer({ userId, name }: { userId: string; name: string }) {
       setLink("");
       setShowLink(false);
       clearFile();
+      setStatus("Posted. Everyone can see it now.");
+      setTimeout(() => setStatus(null), 3000);
     });
   }
 
@@ -166,7 +168,7 @@ export function Composer({ userId, name }: { userId: string; name: string }) {
             {status}
           </span>
         )}
-        <button type="submit" className="btn btn-primary" disabled={!canPost}>
+        <button type="submit" className="btn btn-cta" disabled={!canPost} aria-busy={pending}>
           {pending ? "Posting…" : "Post"}
         </button>
       </div>

@@ -69,7 +69,6 @@ export default async function FeedPage({
       <main className="feed" id="feed">
         <div className="feed-head">
           <h1>{cursor ? "Older news" : "Latest news"}</h1>
-          {!isAdmin && <p>Only admins can post. You can react and comment.</p>}
         </div>
 
         {isAdmin && !cursor && <Composer userId={profile.id} name={profile.full_name} />}

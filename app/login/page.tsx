@@ -69,7 +69,7 @@ export default function LoginPage() {
         <picture>
           <img src="/logo-wordmark.png" alt="Bartalab" width={1380} height={370} className="auth-logo" />
         </picture>
-        <h1>{signup ? "Create your account" : forgot ? "Reset your password" : "Sign in"}</h1>
+        <h1>{signup ? "Join your organization's news" : forgot ? "Reset your password" : "Sign in to Bartalab"}</h1>
         <p className="lede">News and updates from your organization.</p>
 
         <form className="auth-form" onSubmit={submit}>
@@ -138,8 +138,8 @@ export default function LoginPage() {
             </p>
           )}
 
-          <button type="submit" className="btn btn-primary" disabled={busy}>
-            {busy ? "Please wait…" : signup ? "Create account" : forgot ? "Send reset link" : "Sign in"}
+          <button type="submit" className="btn btn-primary" disabled={busy} aria-busy={busy}>
+            {busy ? (signup ? "Creating account…" : forgot ? "Sending…" : "Signing in…") : signup ? "Create account" : forgot ? "Send reset link" : "Sign in"}
           </button>
         </form>
 

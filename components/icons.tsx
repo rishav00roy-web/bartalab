@@ -13,8 +13,8 @@ const wrap = (Icon: K.KubaiIconComponent, fallback: number) =>
 export const ThumbsUp = wrap(K.ThumbsUp, 18);
 export const PartyPopper = wrap(K.PartyPopper, 18);
 export const Lightbulb = wrap(K.Lightbulb, 18);
-export const ImageIcon = wrap(K.Image, 18);
-export const LinkIcon = wrap(K.Link, 18);
+export const ImageIcon = wrap(K.Image, 16);
+export const LinkIcon = wrap(K.Link, 16);
 export const Trash = wrap(K.Trash, 16);
 export const X = wrap(K.CircleX, 16);
 export const Send = wrap(K.Send, 16);

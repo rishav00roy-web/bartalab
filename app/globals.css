@@ -12,10 +12,13 @@
   --surface: #ffffff;
   --surface-2: #fbfbfe;
   --text: #17153a;
-  --muted: #5e5b7a;
+  --muted: #55526f;
   --line: #e8e7f2;
   --danger: #b42318;
   --danger-soft: #fdecea;
+  --danger-hover: #912018;
+  --on-signal: #17153a;
+  --signal-hover: #e06f12;
   --on-brand: #ffffff;
   --focus: #f38023;
 
@@ -28,7 +31,9 @@
 
   --dur-micro: 120ms;
   --dur-short: 200ms;
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
 
+  --fs-xs: 0.8125rem;
   --fs-sm: 0.875rem;
   --fs-base: 1rem;
   --fs-md: 1.125rem;
@@ -77,6 +82,17 @@ h3 {
   font-weight: 700;
   overflow-wrap: break-word;
   min-width: 0;
+  text-wrap: balance;
+}
+
+p {
+  text-wrap: pretty;
+}
+
+time,
+.post-time,
+.member-info small {
+  font-variant-numeric: tabular-nums;
 }
 
 :focus-visible {
@@ -150,14 +166,6 @@ h3 {
   font-size: var(--fs-sm);
   color: var(--muted);
 }
-.role-tag {
-  font-size: 0.8125rem;
-  padding: 0.125rem 0.5rem;
-  border-radius: 999px;
-  background: var(--brand-soft);
-  color: var(--brand);
-  font-weight: 600;
-}
 
 /* Layout ------------------------------------------------------------------- */
 .feed {
@@ -172,7 +180,7 @@ h3 {
   align-items: baseline;
   justify-content: space-between;
   gap: 1rem;
-  padding: 0.25rem 0.25rem 0;
+  padding: 0.25rem 0 0;
 }
 .feed-head h1 {
   font-size: var(--fs-xl);
@@ -226,6 +234,41 @@ h3 {
 }
 .btn-primary:hover:not(:disabled) {
   background: var(--brand-hover);
+}
+.btn-cta {
+  background: var(--signal);
+  color: var(--on-signal);
+  min-height: 44px;
+  padding: 0 1.5rem;
+  font-size: var(--fs-base);
+  font-weight: 700;
+}
+.btn-cta:hover:not(:disabled) {
+  background: var(--signal-hover);
+}
+.btn-danger {
+  background: var(--danger);
+  color: var(--on-brand);
+}
+.btn-danger:hover:not(:disabled) {
+  background: var(--danger-hover);
+}
+.btn[aria-busy="true"] {
+  cursor: progress;
+}
+.btn[aria-busy="true"]::before {
+  content: "";
+  width: 0.875em;
+  height: 0.875em;
+  border-radius: 50%;
+  border: 2px solid currentColor;
+  border-right-color: transparent;
+  animation: spin 0.7s linear infinite;
+}
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 .btn-ghost {
   background: transparent;
@@ -296,6 +339,16 @@ h3 {
   background: var(--danger-soft);
   color: var(--danger);
   font-size: var(--fs-sm);
+}
+.error,
+.note {
+  animation: rise var(--dur-short) var(--ease-out);
+}
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
 }
 .note {
   margin: 0;
@@ -376,6 +429,8 @@ h3 {
   position: absolute;
   top: 0.5rem;
   right: 0.5rem;
+  /* inner radius = outer radius - inset */
+  border-radius: calc(var(--radius-m) - 0.5rem);
 }
 .file-input {
   position: absolute;
@@ -463,17 +518,6 @@ h3 {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-.post-media + .post-stats {
-  padding-top: 0.625rem;
-}
-.post-stats {
-  display: flex;
-  justify-content: space-between;
-  gap: 1rem;
-  padding: 0 1rem 0.5rem;
-  font-size: var(--fs-sm);
-  color: var(--muted);
-}
 
 /* Reactions ---------------------------------------------------------------- */
 .reactions {
@@ -490,7 +534,7 @@ h3 {
   gap: 0.375rem;
   min-height: 40px;
   border: none;
-  border-radius: var(--radius-s);
+  border-radius: calc(var(--radius-l) - 0.375rem);
   background: transparent;
   color: var(--muted);
   font: inherit;
@@ -512,6 +556,15 @@ h3 {
 }
 .react-btn:disabled {
   cursor: wait;
+}
+.react-btn[aria-pressed="true"] svg,
+.react-btn[aria-pressed="true"] .count {
+  animation: pop var(--dur-short) var(--ease-out);
+}
+@keyframes pop {
+  40% {
+    transform: scale(1.25);
+  }
 }
 .react-btn .count {
   font-variant-numeric: tabular-nums;
@@ -548,7 +601,7 @@ h3 {
   font-size: var(--fs-sm);
 }
 .comment-top time {
-  font-size: 0.8125rem;
+  font-size: var(--fs-xs);
   color: var(--muted);
   margin-right: auto;
 }
@@ -646,6 +699,33 @@ h3 {
   border-radius: var(--radius-s);
   animation: pulse 1.4s ease-in-out infinite;
 }
+.skeleton-card {
+  padding: 1rem;
+  display: grid;
+  gap: 0.75rem;
+}
+.skeleton-row {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+}
+.skeleton-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+.skeleton-line {
+  height: 14px;
+}
+.skeleton-line.w-name {
+  width: 140px;
+}
+.skeleton-line.w-70 {
+  width: 70%;
+}
+.skeleton-media {
+  height: 220px;
+}
 @keyframes pulse {
   50% {
     opacity: 0.5;
@@ -679,6 +759,10 @@ h3 {
   padding: 0 1rem 1rem;
   display: grid;
   gap: 0.75rem;
+}
+.confirm-actions {
+  display: inline-flex;
+  gap: 0.25rem;
 }
 .post-edit-actions {
   display: flex;
@@ -764,7 +848,7 @@ h3 {
   background: color-mix(in srgb, var(--signal) 16%, transparent);
   color: var(--signal-ink);
   font-weight: 600;
-  font-size: 0.8125rem;
+  font-size: var(--fs-xs);
 }
 
 /* Pager -------------------------------------------------------------------- */

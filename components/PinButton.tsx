@@ -11,9 +11,10 @@ export function PinButton({ postId, pinned }: { postId: string; pinned: boolean 
       type="button"
       className="btn btn-ghost btn-sm"
       disabled={pending}
+      aria-busy={pending}
       onClick={() => startTransition(async () => void (await setPinned(postId, !pinned)))}
     >
-      <Pin /> {pinned ? "Unpin" : "Pin"}
+      {!pending && <Pin />} {pinned ? "Unpin" : "Pin"}
     </button>
   );
 }
