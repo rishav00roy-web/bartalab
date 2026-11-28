@@ -2,7 +2,7 @@ import Link from "next/link";
 import { href, t, ui, type Lang } from "@/lib/sj24/i18n";
 import { longDate, dateTime } from "@/lib/sj24/format";
 import { breaking, categories, categoryOf, districtOf, type Story } from "@/lib/sj24/sample";
-import { FoldingHeader, LiveClock, RevealOnScroll, ThemeToggle } from "./client";
+import { FoldingHeader, LiveClock, NavMore, RevealOnScroll, ThemeToggle } from "./client";
 
 // Placeholder addresses: replace with SJ24's real accounts before launch.
 const social = [
@@ -12,6 +12,11 @@ const social = [
   { name: "Instagram", url: "#", d: "M12 8.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7ZM17.5 6.3a1 1 0 1 1-2 0 1 1 0 0 1 2 0ZM8 3h8a5 5 0 0 1 5 5v8a5 5 0 0 1-5 5H8a5 5 0 0 1-5-5V8a5 5 0 0 1 5-5Zm0 2a3 3 0 0 0-3 3v8a3 3 0 0 0 3 3h8a3 3 0 0 0 3-3V8a3 3 0 0 0-3-3H8Z" },
   { name: "WhatsApp", url: "#", d: "M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm5.4 13.9c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .2-3.3-.7a11.6 11.6 0 0 1-4.5-4c-.6-.9-1-1.9-1-2.9 0-1 .5-1.6.8-1.9.2-.2.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 2c.1.2.1.4 0 .6l-.4.6-.4.4c-.1.2-.3.3-.1.6.2.3.7 1.1 1.5 1.8 1 .9 1.9 1.2 2.2 1.3.3.1.4.1.6-.1l.8-1c.2-.3.4-.2.6-.1l1.9.9c.3.1.5.2.5.3.1.2.1.6-.1 1.2Z" },
 ];
+
+// The menu shows the sections readers use most; the rest sit under "More".
+const PRIMARY = ["assam", "northeast", "national", "international", "politics", "sports"];
+const primary = PRIMARY.map((slug) => categories.find((c) => c.slug === slug)!).filter(Boolean);
+const secondary = categories.filter((c) => !PRIMARY.includes(c.slug));
 
 export function Picture({ story, lang, size = "md" }: { story: Story; lang: Lang; size?: "sm" | "md" | "lg" }) {
   const cat = categoryOf(story.category);
@@ -217,15 +222,15 @@ export function SiteShell({
         </div>
 
         <nav className="sj-nav" aria-label="Sections">
-          <div className="sj-wrap">
+          <div className="sj-wrap sj-nav-inner">
             <ul className="sj-nav-list">
               <li>
                 <Link href={href("/", lang)} aria-current={active === "home" ? "page" : undefined}>
                   {lang === "as" ? "মুখ্য পৃষ্ঠা" : "Home"}
                 </Link>
               </li>
-              {categories.map((c) => (
-                <li key={c.slug}>
+              {primary.map((c, i) => (
+                <li key={c.slug} data-wide={i >= 3 || undefined}>
                   <Link
                     href={href(`/category/${c.slug}`, lang)}
                     aria-current={active === c.slug ? "page" : undefined}
@@ -235,6 +240,27 @@ export function SiteShell({
                 </li>
               ))}
             </ul>
+            <NavMore label={lang === "as" ? "আৰু" : "More"} current={secondary.some((c) => c.slug === active)}>
+              <ul className="sj-more-list">
+                {primary.slice(3).map((c) => (
+                  <li key={c.slug} data-narrow>
+                    <Link href={href(`/category/${c.slug}`, lang)} aria-current={active === c.slug ? "page" : undefined}>
+                      {t(c.name, lang)}
+                    </Link>
+                  </li>
+                ))}
+                {secondary.map((c) => (
+                  <li key={c.slug}>
+                    <Link href={href(`/category/${c.slug}`, lang)} aria-current={active === c.slug ? "page" : undefined}>
+                      {t(c.name, lang)}
+                    </Link>
+                  </li>
+                ))}
+                <li className="sj-more-districts">
+                  <Link href={href("/districts", lang)}>{t(ui.allDistricts, lang)} →</Link>
+                </li>
+              </ul>
+            </NavMore>
           </div>
         </nav>
         <Ticker lang={lang} />

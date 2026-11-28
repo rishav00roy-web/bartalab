@@ -227,6 +227,41 @@ export function RevealOnScroll() {
   return null;
 }
 
+/** "More" sections menu. Closes on Escape, on an outside click, or after a link is chosen. */
+export function NavMore({ label, current, children }: { label: string; current: boolean; children: React.ReactNode }) {
+  const ref = useRef<HTMLDetailsElement>(null);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const onDown = (e: PointerEvent) => {
+      if (el.open && !el.contains(e.target as Node)) el.open = false;
+    };
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && el.open) {
+        el.open = false;
+        el.querySelector("summary")?.focus();
+      }
+    };
+    document.addEventListener("pointerdown", onDown);
+    document.addEventListener("keydown", onKey);
+    return () => {
+      document.removeEventListener("pointerdown", onDown);
+      document.removeEventListener("keydown", onKey);
+    };
+  }, []);
+  return (
+    <details ref={ref} className="sj-more-menu" data-current={current || undefined}>
+      <summary>
+        {label}
+        <svg viewBox="0 0 12 12" width="10" height="10" aria-hidden="true">
+          <path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+        </svg>
+      </summary>
+      <div className="sj-more-panel">{children}</div>
+    </details>
+  );
+}
+
 export function PrintButton({ label }: { label: string }) {
   return (
     <button type="button" className="sj-share-btn" onClick={() => window.print()}>
