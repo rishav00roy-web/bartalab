@@ -7,7 +7,7 @@ export default function NotFound() {
         <h2>Page not found</h2>
         <p>This page doesn&apos;t exist.</p>
         <Link href="/" className="btn btn-primary">
-          Back to the feed
+          Back to the home page
         </Link>
       </div>
     </main>

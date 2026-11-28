@@ -36,7 +36,7 @@ export default function LoginPage() {
       const { error } = await supabase.auth.signInWithPassword({ email, password });
       setBusy(false);
       if (error) return setError(error.message);
-      router.replace("/");
+      router.replace("/newsroom");
       router.refresh();
       return;
     }
@@ -52,7 +52,7 @@ export default function LoginPage() {
     setBusy(false);
     if (error) return setError(error.message);
     if (data.session) {
-      router.replace("/");
+      router.replace("/newsroom");
       router.refresh();
     } else {
       setNotice("Check your email for a confirmation link, then sign in.");

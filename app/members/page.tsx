@@ -8,7 +8,7 @@ export const dynamic = "force-dynamic";
 
 export default async function MembersPage() {
   const { supabase, profile } = await getSession();
-  if (profile.role !== "admin") redirect("/");
+  if (profile.role !== "admin") redirect("/newsroom");
 
   const { data, error } = await supabase
     .from("profiles")

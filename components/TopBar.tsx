@@ -17,13 +17,13 @@ export function TopBar({
   return (
     <header className="topbar">
       <div className="topbar-inner">
-        <Link href="/" className="brand" aria-label="Bartalab home">
+        <Link href="/newsroom" className="brand" aria-label="Bartalab home">
           <img src="/mark.png" alt="" width={32} height={32} />
           <span className="brand-name">Bartalab</span>
         </Link>
         {profile.approved && (
           <nav className="topnav" aria-label="Main">
-            <Link href="/" aria-current={current === "feed" ? "page" : undefined}>
+            <Link href="/newsroom" aria-current={current === "feed" ? "page" : undefined}>
               <Newspaper /> Feed
             </Link>
             {isAdmin && (

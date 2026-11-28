@@ -18,7 +18,7 @@ export default function ResetPasswordPage() {
     const { error } = await createClient().auth.updateUser({ password });
     setBusy(false);
     if (error) return setError(error.message);
-    router.replace("/");
+    router.replace("/newsroom");
     router.refresh();
   }
 

@@ -1,4 +1,14 @@
-# Bartalab
+# Bartalab (SATYAMEV JAYATE 24)
+
+The public SJ24 news site is at `/` and the members newsroom is at `/newsroom`.
+The public pages use sample stories from `lib/sj24/sample.ts` until the article
+database is built. Assamese pages use `?lang=as`.
+
+Design credits: two line figures copied from [Hairline](https://github.com/lucasmarkes/hairline)
+(MIT, see `lib/hairline/LICENSE`); the folding header, rotating words and elastic
+divider are adapted from the Annnimate starter pack, rewritten without GSAP.
+
+## Newsroom
 
 A private news feed for one organization. Admins post text, pictures, videos and links; everyone else reads, reacts and comments.
 

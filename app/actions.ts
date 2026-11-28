@@ -29,7 +29,7 @@ export async function createPost(input: {
     media_type: input.mediaType,
   });
   if (error) return { error: error.message };
-  revalidatePath("/");
+  revalidatePath("/newsroom");
   return { error: null };
 }
 
@@ -38,7 +38,7 @@ export async function deletePost(postId: string, mediaPath: string | null) {
   const { error } = await supabase.from("posts").delete().eq("id", postId);
   if (error) return { error: error.message };
   if (mediaPath) await supabase.storage.from("post-media").remove([mediaPath]);
-  revalidatePath("/");
+  revalidatePath("/newsroom");
   return { error: null };
 }
 
@@ -50,7 +50,7 @@ export async function addComment(postId: string, body: string) {
     .from("comments")
     .insert({ post_id: postId, author_id: user.id, body: text });
   if (error) return { error: error.message };
-  revalidatePath("/");
+  revalidatePath("/newsroom");
   return { error: null };
 }
 
@@ -58,7 +58,7 @@ export async function deleteComment(commentId: string) {
   const { supabase } = await requireUser();
   const { error } = await supabase.from("comments").delete().eq("id", commentId);
   if (error) return { error: error.message };
-  revalidatePath("/");
+  revalidatePath("/newsroom");
   return { error: null };
 }
 
@@ -70,7 +70,7 @@ export async function setReaction(postId: string, kind: ReactionKind | null) {
         .upsert({ post_id: postId, user_id: user.id, kind }, { onConflict: "post_id,user_id" })
     : await supabase.from("reactions").delete().match({ post_id: postId, user_id: user.id });
   if (error) return { error: error.message };
-  revalidatePath("/");
+  revalidatePath("/newsroom");
   return { error: null };
 }
 
@@ -87,7 +87,7 @@ export async function updatePost(postId: string, body: string, linkUrl: string |
     .update({ body: body.trim(), link_url: linkUrl })
     .eq("id", postId);
   if (error) return { error: error.message };
-  revalidatePath("/");
+  revalidatePath("/newsroom");
   return { error: null };
 }
 
@@ -95,7 +95,7 @@ export async function setPinned(postId: string, pinned: boolean) {
   const { supabase } = await requireUser();
   const { error } = await supabase.from("posts").update({ pinned }).eq("id", postId);
   if (error) return { error: error.message };
-  revalidatePath("/");
+  revalidatePath("/newsroom");
   return { error: null };
 }
 
@@ -108,7 +108,7 @@ export async function setMember(target: string, role: "admin" | "member", approv
   });
   if (error) return { error: error.message };
   revalidatePath("/members");
-  revalidatePath("/");
+  revalidatePath("/newsroom");
   return { error: null };
 }
 
