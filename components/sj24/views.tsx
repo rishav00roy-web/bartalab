@@ -100,6 +100,17 @@ export function HomeView({ lang }: { lang: Lang }) {
         <ElasticDivider />
 
         <section className="sj-districts" aria-labelledby="dist-h">
+          <div className="sj-stage sj-districts-figure">
+            <LineFigure
+              kind="relay"
+              label={
+                lang === "as"
+                  ? "সজ্জাৰ ৰেখাচিত্ৰ: এটা কেন্দ্ৰৰ পৰা শাখাবোৰলৈ সংযোগ।"
+                  : "Decorative line drawing: one hub connected to branches of tiles; the route to the one you point at lights up."
+              }
+            />
+            <p className="sj-stage-note">{lang === "as" ? "এটা নিউজৰুম · ৩৫খন জিলা" : "One newsroom · 35 districts"}</p>
+          </div>
           <div className="sj-districts-copy">
             <SectionHead id="dist-h" title={t(ui.districts, lang)} more="/districts" lang={lang} />
             <ul className="sj-chips">
@@ -121,9 +132,6 @@ export function HomeView({ lang }: { lang: Lang }) {
                 <StoryCard key={s.slug} story={s} lang={lang} variant="text" />
               ))}
             </div>
-          </div>
-          <div className="sj-districts-figure">
-            <LineFigure kind="terrain" label="Decorative line drawing: a field of pillars that rise around the pointer." />
           </div>
         </section>
 
@@ -183,7 +191,7 @@ export function HomeView({ lang }: { lang: Lang }) {
       </div>
 
       <section className="sj-cta" aria-labelledby="cta-h">
-        <div className="sj-wrap sj-cta-inner">
+        <div className="sj-wrap sj-stage sj-cta-inner">
           <div>
             <h2 id="cta-h">{t(ui.reporterTitle, lang)}</h2>
             <p>{t(ui.reporterBody, lang)}</p>
@@ -192,7 +200,14 @@ export function HomeView({ lang }: { lang: Lang }) {
             </Link>
           </div>
           <div className="sj-cta-figure">
-            <LineFigure kind="dish" label="Decorative line drawing: a satellite dish that turns to follow the pointer." />
+            <LineFigure
+              kind="dish"
+              label={
+                lang === "as"
+                  ? "সজ্জাৰ ৰেখাচিত্ৰ: এখন উপগ্ৰহ এণ্টেনা।"
+                  : "Decorative line drawing: a satellite dish that turns to follow the pointer."
+              }
+            />
           </div>
         </div>
       </section>
@@ -329,6 +344,11 @@ export function ListView({
               {t(ui.search, lang)}
             </button>
           </form>
+        )}
+        {path === "/search" && !items.length && (
+          <div className="sj-stage sj-search-stage">
+            <LineFigure kind="loupe" label={lang === "as" ? "সজ্জাৰ ৰেখাচিত্ৰ: এখন বিবৰ্ধক কাঁচ।" : "Decorative line drawing: a magnifying glass passing over a page."} />
+          </div>
         )}
         {items.length ? (
           <div className="sj-grid-3">
