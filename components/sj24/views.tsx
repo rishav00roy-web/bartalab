@@ -15,9 +15,9 @@ import { AdSlot, Kicker, Picture, SectionHead, SiteShell, StoryCard, infoPages }
 
 const SITE = "https://www.sj24.in";
 
-function MostRead({ lang }: { lang: Lang }) {
+function MostRead({ lang, strip }: { lang: Lang; strip?: boolean }) {
   return (
-    <section className="sj-mostread" aria-labelledby="mr-h">
+    <section className={strip ? "sj-mostread sj-mostread-strip" : "sj-mostread"} aria-labelledby="mr-h">
       <h2 id="mr-h" className="sj-rail-title">
         {t(ui.mostRead, lang)}
       </h2>
@@ -78,11 +78,8 @@ export function HomeView({ lang }: { lang: Lang }) {
               <StoryCard key={s.slug} story={s} lang={lang} variant="row" />
             ))}
           </div>
-          <aside className="sj-rail">
-            <MostRead lang={lang} />
-            <AdSlot lang={lang} size="box" />
-          </aside>
         </section>
+        <MostRead lang={lang} strip />
       </div>
 
       <section className="sj-band">
