@@ -2,8 +2,7 @@ import Link from "next/link";
 import { href, t, ui, type Lang } from "@/lib/sj24/i18n";
 import { longDate, dateTime } from "@/lib/sj24/format";
 import { categories, categoryOf, districtOf, type Story } from "@/lib/sj24/sample";
-import { CrowdEntrance, FoldingHeader, LiveClock, NavMore, ThemeToggle } from "./client";
-import { Crowd } from "./crowd";
+import { CrowdVideo, FoldingHeader, LiveClock, NavMore, ThemeToggle } from "./client";
 
 // Placeholder addresses: replace with SJ24's real accounts before launch.
 const social = [
@@ -316,11 +315,14 @@ function SiteFooter({ lang }: { lang: Lang }) {
         </div>
       </div>
 
-      <div className="sj-footer-crowd" data-crowd>
+      <div className="sj-footer-crowd">
         <p className="sj-footer-mark" aria-hidden="true">
           SJ24
         </p>
-        <Crowd />
+        <CrowdVideo
+          pauseLabel={as ? "ভিডিঅ' ৰখাওক" : "Pause the crowd animation"}
+          playLabel={as ? "ভিডিঅ' চলাওক" : "Play the crowd animation"}
+        />
       </div>
 
       <div className="sj-footer-base">
@@ -328,7 +330,6 @@ function SiteFooter({ lang }: { lang: Lang }) {
           © {new Date().getFullYear()} SATYAMEV JAYATE 24 · www.sj24.in · Gousamuh Gramaya Foundation
         </p>
       </div>
-      <CrowdEntrance />
     </footer>
   );
 }

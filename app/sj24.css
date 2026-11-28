@@ -1155,7 +1155,7 @@
 .sj-footer-mark {
   position: absolute;
   left: 50%;
-  top: -0.08em;
+  top: -0.12em;
   margin: 0;
   transform: translateX(-50%);
   color: #ececec;
@@ -1170,33 +1170,41 @@
 :root[data-theme="dark"] .sj-footer-mark {
   color: #e2dfd8;
 }
-.sj-crowd {
+/* The crowd video: multiplied onto the band, so its off-white disappears and
+   the giant SJ24 shows through between the people. */
+.sj-crowd-video {
   position: relative;
   display: block;
   width: 100%;
-  height: clamp(220px, 26vw, 380px);
+  max-width: 1440px;
+  height: auto;
+  aspect-ratio: 1280 / 600;
+  max-height: 560px;
+  margin: 0 auto;
+  mix-blend-mode: multiply;
+  object-fit: cover;
+  object-position: center bottom;
 }
-.sj-person {
-  transition: transform 450ms var(--ease);
+.sj-crowd-toggle {
+  position: absolute;
+  right: max(var(--gap), (100% - var(--wrap)) / 2);
+  bottom: 16px;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border: 1px solid rgb(0 0 0 / 0.12);
+  border-radius: 50%;
+  background: rgb(255 255 255 / 0.9);
+  color: #111;
+  cursor: pointer;
+  transition: transform 150ms var(--ease);
 }
-.sj-person:hover {
-  transform: translateY(-10px);
+.sj-crowd-toggle:hover {
+  background: #fff;
 }
-/* Entrance: the crowd rises in once, person by person. */
-.sj-footer-crowd[data-crowd="ready"] .sj-person {
-  opacity: 0;
-  transform: translateY(40px);
-}
-.sj-footer-crowd[data-crowd="in"] .sj-person {
-  opacity: 1;
-  transform: none;
-  transition:
-    transform 700ms var(--ease) var(--d),
-    opacity 400ms ease var(--d);
-}
-.sj-footer-crowd[data-crowd="in"] .sj-person:hover {
-  transform: translateY(-10px);
-  transition: transform 300ms var(--ease);
+.sj-crowd-toggle:active {
+  transform: scale(0.94);
 }
 .sj-footer-base {
   background: #0b0c0f;
@@ -1225,6 +1233,11 @@
   .sj-footer-close {
     flex-direction: column;
     align-items: flex-start;
+  }
+  /* Phones: keep a usable height and show the middle of the crowd. */
+  .sj-crowd-video {
+    aspect-ratio: auto;
+    height: 260px;
   }
   .sj-tagline {
     display: none;
