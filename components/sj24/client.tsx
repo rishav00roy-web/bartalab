@@ -309,7 +309,7 @@ export function CrowdVideo({ pauseLabel, playLabel }: { pauseLabel: string; play
         preload="none"
         poster={near ? "/footer/crowd-poster.webp" : undefined}
         width={1280}
-        height={600}
+        height={560}
         aria-hidden="true"
       >
         <source src="/footer/crowd.mp4" type="video/mp4" />

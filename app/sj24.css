@@ -1175,15 +1175,13 @@
 .sj-crowd-video {
   position: relative;
   display: block;
+  /* Always the full width: no empty sides on wide screens. Anchored at the
+     top, so heads are never cut; very wide screens lose a little at the waist. */
   width: 100%;
-  max-width: 1440px;
-  height: auto;
-  aspect-ratio: 1280 / 600;
-  max-height: 560px;
-  margin: 0 auto;
-  mix-blend-mode: multiply;
+  height: clamp(240px, 36vw, 620px);
   object-fit: cover;
-  object-position: center bottom;
+  object-position: 50% 0%;
+  mix-blend-mode: multiply;
 }
 .sj-crowd-toggle {
   position: absolute;
@@ -1234,10 +1232,10 @@
     flex-direction: column;
     align-items: flex-start;
   }
-  /* Phones: keep a usable height and show the middle of the crowd. */
+  /* Phones: show the middle of the crowd. */
   .sj-crowd-video {
-    aspect-ratio: auto;
     height: 260px;
+    object-position: 50% 0%;
   }
   .sj-tagline {
     display: none;
