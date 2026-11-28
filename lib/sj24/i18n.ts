@@ -55,5 +55,4 @@ export const ui = {
   noStories: { en: "No stories here yet.", as: "ইয়াত এতিয়াও কোনো বাতৰি নাই।" },
   results: { en: "Results for", as: "ফলাফল" },
   dark: { en: "Dark mode", as: "আন্ধাৰ ম'ড" },
-  newsroom: { en: "Newsroom login", as: "নিউজৰুম লগইন" },
 } satisfies Record<string, Text>;

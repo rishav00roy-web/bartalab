@@ -302,11 +302,6 @@ function SiteFooter({ lang }: { lang: Lang }) {
             <br />
             Email: <em>to be added</em>
           </p>
-          <p>
-            <Link href="/login" className="sj-footer-login">
-              {t(ui.newsroom, lang)}
-            </Link>
-          </p>
         </div>
       </div>
       <p className="sj-wrap sj-copy">

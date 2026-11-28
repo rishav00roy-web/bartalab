@@ -1042,16 +1042,6 @@
 .sj-footer-col p {
   color: var(--muted);
 }
-.sj-footer-login {
-  display: inline-flex;
-  align-items: center;
-  min-height: 40px;
-  padding: 0 16px;
-  border: 1px solid var(--line);
-  border-radius: 999px;
-  color: var(--ink) !important;
-  font-weight: 600;
-}
 .sj-copy {
   padding-block: 20px 36px;
   border-top: 1px solid var(--line);
