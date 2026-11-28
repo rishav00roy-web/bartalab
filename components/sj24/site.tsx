@@ -2,7 +2,7 @@ import Link from "next/link";
 import { href, t, ui, type Lang } from "@/lib/sj24/i18n";
 import { longDate, dateTime } from "@/lib/sj24/format";
 import { breaking, categories, categoryOf, districtOf, type Story } from "@/lib/sj24/sample";
-import { FoldingHeader, LiveClock, ThemeToggle } from "./client";
+import { FoldingHeader, LiveClock, RevealOnScroll, ThemeToggle } from "./client";
 
 // Placeholder addresses: replace with SJ24's real accounts before launch.
 const social = [
@@ -104,11 +104,7 @@ export function AdSlot({ lang, size = "wide" }: { lang: Lang; size?: "wide" | "b
 function Wordmark() {
   return (
     <span className="sj-wordmark">
-      <span className="sj-wordmark-top">SATYAMEV</span>
-      <span className="sj-wordmark-row">
-        <span className="sj-wordmark-bottom">JAYATE</span>
-        <span className="sj-wordmark-24">24</span>
-      </span>
+      Satyamev Jayate <span className="sj-wordmark-24">24</span>
     </span>
   );
 }
@@ -194,7 +190,7 @@ export function SiteShell({
           <div className="sj-wrap sj-masthead-inner">
             <Link href={href("/", lang)} className="sj-brand" aria-label="SATYAMEV JAYATE 24, home">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/sj24-badge-96.png" alt="" width={56} height={56} className="sj-badge" />
+              <img src="/sj24-icon-96.png" alt="" width={56} height={56} className="sj-badge" />
               <Wordmark />
             </Link>
             <p className="sj-tagline">{t(ui.tagline, lang)}</p>
@@ -249,6 +245,7 @@ export function SiteShell({
       </main>
 
       <SiteFooter lang={lang} />
+      <RevealOnScroll />
     </div>
   );
 }
@@ -276,7 +273,7 @@ function SiteFooter({ lang }: { lang: Lang }) {
       <div className="sj-wrap sj-footer-grid">
         <div className="sj-footer-brand">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/sj24-badge.png" alt="SATYAMEV JAYATE 24 logo" width={120} height={120} />
+          <img src="/sj24-icon.png" alt="SJ24 logo" width={64} height={64} />
           <p className="sj-footer-tag">{t(ui.tagline, lang)}</p>
           <p>{t(ui.publisher, lang)}</p>
         </div>

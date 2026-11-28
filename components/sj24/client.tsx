@@ -101,6 +101,7 @@ export function RotatingWords({ words, prefix }: { words: string[]; prefix: stri
       </span>
       <span aria-hidden="true">{prefix} </span>
       <span className="sj-rotate-drum" aria-hidden="true">
+        <span className="sj-rotate-sizer">{words.reduce((a, b) => (b.length > a.length ? b : a), "")}</span>
         {words.map((w, n) => {
           const offset = (n - i + words.length) % words.length;
           const pos = offset === 0 ? "now" : offset === words.length - 1 ? "past" : "next";
@@ -185,6 +186,45 @@ export function ElasticDivider() {
       </svg>
     </div>
   );
+}
+
+/**
+ * Cards rise in softly as they enter the screen, a few at a time. Content is
+ * visible without JavaScript; the effect only starts once this has mounted,
+ * and not at all with reduced motion.
+ */
+export function RevealOnScroll() {
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (!("IntersectionObserver" in window)) return;
+    const root = document.documentElement;
+    const cards = Array.from(document.querySelectorAll<HTMLElement>(".sj-card"));
+    const io = new IntersectionObserver(
+      (entries) => {
+        let n = 0;
+        for (const e of entries) {
+          if (!e.isIntersecting) continue;
+          const el = e.target as HTMLElement;
+          el.style.setProperty("--sj-delay", `${Math.min(n++, 4) * 70}ms`);
+          el.classList.add("is-in");
+          io.unobserve(el);
+        }
+      },
+      { rootMargin: "0px 0px -8% 0px" },
+    );
+    // Cards already on screen stay put; only those further down animate.
+    const fold = window.innerHeight;
+    for (const el of cards) {
+      if (el.getBoundingClientRect().top < fold) el.classList.add("is-in");
+      else io.observe(el);
+    }
+    root.classList.add("sj-js");
+    return () => {
+      io.disconnect();
+      root.classList.remove("sj-js");
+    };
+  }, []);
+  return null;
 }
 
 export function PrintButton({ label }: { label: string }) {
