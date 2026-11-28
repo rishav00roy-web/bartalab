@@ -1,12 +1,23 @@
 import type { Metadata, Viewport } from "next";
-import { Figtree, Inter, Noto_Sans_Bengali } from "next/font/google";
+import { headers } from "next/headers";
+import { Figtree, Inter, Newsreader, Noto_Sans_Bengali, Noto_Serif_Bengali } from "next/font/google";
 import "./globals.css";
 import "./sj24.css";
 
-const figtree = Figtree({ subsets: ["latin"], variable: "--font-figtree", display: "swap" });
+// Inter for interface text, Newsreader (a serif drawn for news) for headlines.
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter", display: "swap" });
-// Noto's Bengali-script fonts cover Assamese, including ৰ and ৱ.
-const assamese = Noto_Sans_Bengali({ subsets: ["bengali"], variable: "--font-as", display: "swap" });
+const newsreader = Newsreader({ subsets: ["latin"], variable: "--font-news", display: "swap" });
+// Noto's Bengali-script fonts cover Assamese, including ৰ and ৱ. Not preloaded,
+// so English readers don't download them.
+const assamese = Noto_Sans_Bengali({ subsets: ["bengali"], variable: "--font-as", display: "swap", preload: false });
+const assameseSerif = Noto_Serif_Bengali({
+  subsets: ["bengali"],
+  variable: "--font-as-news",
+  display: "swap",
+  preload: false,
+});
+// The newsroom screens still use Figtree.
+const figtree = Figtree({ subsets: ["latin"], variable: "--font-figtree", display: "swap", preload: false });
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.sj24.in"),
@@ -19,17 +30,22 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  themeColor: "#ffffff",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
+    { media: "(prefers-color-scheme: dark)", color: "#0b0c0f" },
+  ],
 };
 
 // Applies the saved reading mode before the first paint, so dark mode doesn't flash.
 const themeScript = `try{var t=localStorage.getItem("sj24-theme");if(t!=="light"&&t!=="dark")t=matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light";document.documentElement.dataset.theme=t}catch(e){}`;
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  // Set by middleware from ?lang=as, so screen readers and search engines get the right language.
+  const lang = (await headers()).get("x-sj-lang") === "as" ? "as" : "en";
   return (
     <html
-      lang="en"
-      className={`${figtree.variable} ${inter.variable} ${assamese.variable}`}
+      lang={lang}
+      className={`${inter.variable} ${newsreader.variable} ${assamese.variable} ${assameseSerif.variable} ${figtree.variable}`}
       suppressHydrationWarning
     >
       <head>

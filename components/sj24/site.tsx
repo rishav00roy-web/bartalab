@@ -2,7 +2,7 @@ import Link from "next/link";
 import { href, t, ui, type Lang } from "@/lib/sj24/i18n";
 import { longDate, dateTime } from "@/lib/sj24/format";
 import { categories, categoryOf, districtOf, type Story } from "@/lib/sj24/sample";
-import { FoldingHeader, LiveClock, NavMore, RevealOnScroll, ThemeToggle } from "./client";
+import { FoldingHeader, LiveClock, NavMore, ThemeToggle } from "./client";
 
 // Placeholder addresses: replace with SJ24's real accounts before launch.
 const social = [
@@ -22,6 +22,7 @@ export function Picture({ story, lang, size = "md" }: { story: Story; lang: Lang
   const cat = categoryOf(story.category);
   return (
     <div className={`sj-pic sj-pic-${size}`} data-tone={story.tone}>
+      <span className="sj-pic-fill" aria-hidden="true" />
       {story.kind === "video" && (
         <span className="sj-play" aria-hidden="true">
           <svg viewBox="0 0 24 24" width="22" height="22">
@@ -240,7 +241,6 @@ export function SiteShell({
       </main>
 
       <SiteFooter lang={lang} />
-      <RevealOnScroll />
     </div>
   );
 }

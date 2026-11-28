@@ -85,13 +85,21 @@ export function FoldingHeader({ children }: { children: React.ReactNode }) {
 
 /**
  * One word at a time on a turning drum (after Annnimate's rotating-words).
- * Screen readers get the whole list once.
+ * Runs through the list once and stops. Screen readers get the whole list.
  */
 export function RotatingWords({ words, prefix }: { words: string[]; prefix: string }) {
   const [i, setI] = useState(0);
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    const id = setInterval(() => setI((n) => (n + 1) % words.length), 2200);
+    // One pass through the list, landing on the last word: nothing keeps moving on its own.
+    const id = setInterval(
+      () =>
+        setI((n) => {
+          if (n + 1 >= words.length - 1) clearInterval(id);
+          return Math.min(n + 1, words.length - 1);
+        }),
+      1600,
+    );
     return () => clearInterval(id);
   }, [words.length]);
   return (
@@ -186,45 +194,6 @@ export function ElasticDivider() {
       </svg>
     </div>
   );
-}
-
-/**
- * Cards rise in softly as they enter the screen, a few at a time. Content is
- * visible without JavaScript; the effect only starts once this has mounted,
- * and not at all with reduced motion.
- */
-export function RevealOnScroll() {
-  useEffect(() => {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    if (!("IntersectionObserver" in window)) return;
-    const root = document.documentElement;
-    const cards = Array.from(document.querySelectorAll<HTMLElement>(".sj-card"));
-    const io = new IntersectionObserver(
-      (entries) => {
-        let n = 0;
-        for (const e of entries) {
-          if (!e.isIntersecting) continue;
-          const el = e.target as HTMLElement;
-          el.style.setProperty("--sj-delay", `${Math.min(n++, 4) * 70}ms`);
-          el.classList.add("is-in");
-          io.unobserve(el);
-        }
-      },
-      { rootMargin: "0px 0px -8% 0px" },
-    );
-    // Cards already on screen stay put; only those further down animate.
-    const fold = window.innerHeight;
-    for (const el of cards) {
-      if (el.getBoundingClientRect().top < fold) el.classList.add("is-in");
-      else io.observe(el);
-    }
-    root.classList.add("sj-js");
-    return () => {
-      io.disconnect();
-      root.classList.remove("sj-js");
-    };
-  }, []);
-  return null;
 }
 
 /** "More" sections menu. Closes on Escape, on an outside click, or after a link is chosen. */

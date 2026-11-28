@@ -53,6 +53,11 @@ export function HomeView({ lang }: { lang: Lang }) {
 
   return (
     <SiteShell lang={lang} path="/" active="home">
+      <h1 className="visually-hidden">
+        {lang === "as"
+          ? "সত্যমেৱ জয়তে ২৪: অসম, উত্তৰ-পূব, ভাৰত আৰু বিশ্বৰ বাতৰি"
+          : "SATYAMEV JAYATE 24: news from Assam, the Northeast, India and the world"}
+      </h1>
       <div className="sj-wrap">
         <section className="sj-hero" aria-label="Top stories">
           <article className="sj-lead">
@@ -190,7 +195,7 @@ export function HomeView({ lang }: { lang: Lang }) {
             </Link>
           </div>
           <div className="sj-cta-figure">
-            <LineFigure kind="dish" label="Decorative line drawing: a satellite dish that turns to follow the pointer." play />
+            <LineFigure kind="dish" label="Decorative line drawing: a satellite dish that turns to follow the pointer." />
           </div>
         </div>
       </section>

@@ -7,9 +7,16 @@ export async function middleware(request: NextRequest) {
   const path = request.nextUrl.pathname;
   // The news site is public; only the newsroom tools and sign-in need the session.
   const isPrivate = PRIVATE.some((p) => path === p || path.startsWith(`${p}/`));
-  if (!isPrivate && !path.startsWith("/login")) return NextResponse.next();
+  // Tell the root layout which language the page is in, for <html lang>.
+  const lang = request.nextUrl.searchParams.get("lang") === "as" ? "as" : "en";
+  const withLang = () => {
+    const h = new Headers(request.headers);
+    h.set("x-sj-lang", lang);
+    return h;
+  };
+  if (!isPrivate && !path.startsWith("/login")) return NextResponse.next({ request: { headers: withLang() } });
 
-  let response = NextResponse.next({ request });
+  let response = NextResponse.next({ request: { headers: withLang() } });
 
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -21,7 +28,8 @@ export async function middleware(request: NextRequest) {
         },
         setAll(cookiesToSet) {
           cookiesToSet.forEach(({ name, value }) => request.cookies.set(name, value));
-          response = NextResponse.next({ request });
+          // Rebuilt after the cookie update so the page sees the refreshed session.
+          response = NextResponse.next({ request: { headers: withLang() } });
           cookiesToSet.forEach(({ name, value, options }) =>
             response.cookies.set(name, value, options),
           );

@@ -15,6 +15,8 @@
   --focus: #d7151f;
 
   --sans: var(--font-inter), var(--font-figtree), ui-sans-serif, system-ui, -apple-system, sans-serif;
+  /* Headlines only: a serif drawn for news reads as journalism, not as an app. */
+  --news: var(--font-news), Georgia, "Times New Roman", serif;
 
   --fs-xs: clamp(0.75rem, 0.72rem + 0.12vw, 0.8125rem);
   --fs-sm: clamp(0.875rem, 0.84rem + 0.15vw, 0.9375rem);
@@ -43,6 +45,7 @@
 
 .sj[lang="as"] {
   --sans: var(--font-as), var(--font-inter), "Noto Sans Bengali", sans-serif;
+  --news: var(--font-as-news), var(--font-as), "Noto Serif Bengali", serif;
   line-height: 1.7;
 }
 
@@ -128,8 +131,8 @@
 .sj-social a {
   display: grid;
   place-items: center;
-  width: 36px;
-  height: 36px;
+  width: 44px;
+  height: 44px;
   color: var(--muted);
 }
 .sj-lang {
@@ -137,13 +140,19 @@
   gap: 2px;
 }
 .sj-lang a {
-  padding: 6px 8px;
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 10px;
   color: var(--muted);
 }
 .sj-lang a[aria-current] {
   color: var(--ink);
   font-weight: 700;
   box-shadow: inset 0 -2px 0 var(--ink);
+}
+.sj-util-inner {
+  min-height: 48px;
 }
 .sj-icon-btn {
   display: grid;
@@ -185,6 +194,7 @@
   display: flex;
   align-items: center;
   gap: 12px;
+  min-height: 44px;
 }
 .sj .sj-brand:hover {
   color: var(--ink);
@@ -335,7 +345,7 @@
 .sj-more-list a {
   display: flex;
   align-items: center;
-  min-height: 40px;
+  min-height: 44px;
   padding: 0 10px;
   border-radius: 6px;
   font-size: var(--fs-sm);
@@ -370,16 +380,21 @@
   aspect-ratio: 3 / 2;
   border-radius: var(--radius);
   overflow: hidden;
+  background: var(--soft);
+}
+.sj-pic-fill {
+  position: absolute;
+  inset: 0;
   background: var(--tint, var(--soft));
-  transition: transform 500ms var(--ease);
+  transition: transform 600ms var(--ease);
 }
 .sj-pic[data-tone="navy"] { --tint: #e6e9f2; }
 .sj-pic[data-tone="red"] { --tint: #f4e7e7; }
 .sj-pic[data-tone="saffron"] { --tint: #f6ede2; }
 .sj-pic[data-tone="green"] { --tint: #e5efe7; }
 .sj-pic[data-tone="teal"] { --tint: #e3eef0; }
-.sj-pic[data-tone="plum"] { --tint: #ece8f2; }
-:root[data-theme="dark"] .sj-pic {
+.sj-pic[data-tone="stone"] { --tint: #ecebe7; }
+:root[data-theme="dark"] .sj-pic-fill {
   background: color-mix(in srgb, var(--tint, #222) 10%, #16181d);
 }
 .sj-pic-label {
@@ -424,9 +439,9 @@
 .sj-pic-sm .sj-play svg {
   width: 13px;
 }
-.sj-card:hover .sj-pic,
-.sj-lead:hover .sj-pic {
-  transform: scale(0.985);
+.sj-card:hover .sj-pic-fill,
+.sj-lead:hover .sj-pic-fill {
+  transform: scale(1.03);
 }
 
 /* Cards ------------------------------------------------------------------ */
@@ -443,9 +458,26 @@
   color: var(--red-ink);
 }
 .sj-card-title {
-  font-size: var(--fs-lg);
-  font-weight: 700;
-  line-height: 1.25;
+  font-family: var(--news);
+  font-size: calc(var(--fs-lg) * 1.06);
+  font-weight: 600;
+  line-height: 1.22;
+  letter-spacing: -0.01em;
+}
+/* Headline links: an underline draws in under the pointer. */
+.sj-card-title a,
+.sj-lead-title a,
+.sj-mostread a {
+  background: linear-gradient(currentColor, currentColor) 0 100% / 0 1px no-repeat;
+  transition: background-size 300ms var(--ease), color 150ms ease;
+}
+.sj .sj-card-title a:hover,
+.sj .sj-lead-title a:hover,
+.sj .sj-mostread a:hover,
+.sj-card-title a:focus-visible,
+.sj-lead-title a:focus-visible {
+  color: var(--ink);
+  background-size: 100% 1px;
 }
 .sj-card-sub {
   margin: 8px 0 0;
@@ -477,17 +509,6 @@
   border-top: 1px solid var(--line);
 }
 
-/* Reveal: only once JS is running and motion is allowed. */
-.sj-js .sj-card:not(.is-in) {
-  opacity: 0;
-  transform: translateY(14px);
-}
-.sj-js .sj-card {
-  transition:
-    opacity 600ms var(--ease) var(--sj-delay, 0ms),
-    transform 600ms var(--ease) var(--sj-delay, 0ms);
-}
-
 .sj-section-head {
   display: flex;
   align-items: baseline;
@@ -500,6 +521,9 @@
   font-weight: 800;
 }
 .sj-more {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
   font-size: var(--fs-sm);
   font-weight: 600;
   color: var(--muted);
@@ -528,10 +552,11 @@
   margin-top: 20px;
 }
 .sj-lead-title {
-  font-size: clamp(2rem, 1.4rem + 2.2vw, 3.4rem);
-  line-height: 1.02;
-  font-weight: 800;
-  letter-spacing: -0.035em;
+  font-family: var(--news);
+  font-size: clamp(2.1rem, 1.4rem + 2.4vw, 3.6rem);
+  line-height: 1.04;
+  font-weight: 600;
+  letter-spacing: -0.02em;
   text-wrap: balance;
 }
 .sj[lang="as"] .sj-lead-title {
@@ -567,6 +592,7 @@
   counter-reset: mr;
 }
 .sj-mostread li {
+  font-family: var(--news);
   counter-increment: mr;
   display: grid;
   grid-template-columns: 28px 1fr;
@@ -578,6 +604,7 @@
   line-height: 1.35;
 }
 .sj-mostread li::before {
+  font-family: var(--sans);
   content: counter(mr, decimal-leading-zero);
   font-size: var(--fs-xs);
   font-weight: 700;
@@ -708,7 +735,7 @@
 .sj-chip {
   display: inline-flex;
   align-items: center;
-  min-height: 36px;
+  min-height: 44px;
   padding: 0 14px;
   border: 1px solid var(--line);
   border-radius: 999px;
@@ -757,7 +784,7 @@
   margin-top: 0;
   padding-top: var(--section);
 }
-.sj-video .sj-pic {
+.sj-video .sj-pic-fill {
   background: color-mix(in srgb, var(--tint, #333) 12%, #16181d);
 }
 .sj-video .sj-pic-label,
@@ -848,10 +875,11 @@
   max-width: 720px;
 }
 .sj-article-title {
+  font-family: var(--news);
   font-size: var(--fs-2xl);
-  line-height: 1.04;
-  font-weight: 800;
-  letter-spacing: -0.035em;
+  line-height: 1.06;
+  font-weight: 600;
+  letter-spacing: -0.02em;
   text-wrap: balance;
 }
 .sj[lang="as"] .sj-article-title {
@@ -886,6 +914,7 @@
 }
 .sj-article-body {
   margin-top: 32px;
+  font-family: var(--news);
   font-size: clamp(1.0625rem, 1rem + 0.3vw, 1.1875rem);
   line-height: 1.75;
   color: var(--ink-2);
@@ -911,7 +940,8 @@
 .sj-share-btn {
   display: inline-flex;
   align-items: center;
-  min-height: 40px;
+  min-height: 44px;
+  transition: border-color 150ms ease, transform 150ms var(--ease);
   padding: 0 16px;
   border: 1px solid var(--line);
   border-radius: 999px;
@@ -925,6 +955,11 @@
 .sj .sj-share-btn:hover {
   border-color: var(--ink);
   color: var(--ink);
+}
+.sj-share-btn:active,
+.sj-icon-btn:active,
+.sj-chip:active {
+  transform: scale(0.96);
 }
 .sj-tags {
   display: flex;
@@ -967,8 +1002,13 @@
   align-items: center;
   min-height: 56px;
   padding: 0 4px;
+  transition: padding 200ms var(--ease);
   border-top: 1px solid var(--line);
   font-weight: 600;
+}
+.sj .sj-district-grid a:hover {
+  padding-left: 10px;
+  color: var(--ink);
 }
 .sj-district-grid small {
   color: var(--muted);

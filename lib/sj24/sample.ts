@@ -83,7 +83,7 @@ export type Story = {
   reads: number;
   sponsored?: boolean;
   /** Placeholder picture tint until real photos exist. */
-  tone: "navy" | "red" | "saffron" | "green" | "teal" | "plum";
+  tone: "navy" | "red" | "saffron" | "green" | "teal" | "stone";
 };
 
 const placeholderBody: Text[] = [
@@ -186,7 +186,7 @@ const seeds: Seed[] = [
     subheadline: { en: "Homestays report early bookings", as: "হোমষ্টেত আগতীয়া বুকিং" },
     publishedAt: "2026-11-27T16:00:00+05:30",
     reads: 2500,
-    tone: "plum",
+    tone: "stone",
   },
   {
     slug: "arunachal-road-link",
@@ -268,7 +268,7 @@ const seeds: Seed[] = [
     subheadline: { en: "Young performers rehearse every evening", as: "যুৱ শিল্পীসকলে প্ৰতি সন্ধিয়া অনুশীলন কৰিছে" },
     publishedAt: "2026-11-26T12:20:00+05:30",
     reads: 3300,
-    tone: "plum",
+    tone: "stone",
   },
   {
     slug: "village-roads-and-the-last-mile",
