@@ -38,12 +38,6 @@ export const ui = {
   correction: { en: "Correction", as: "সংশোধন" },
   sponsored: { en: "Sponsored", as: "পৃষ্ঠপোষকতা" },
   advert: { en: "Advertisement", as: "বিজ্ঞাপন" },
-  reporterTitle: { en: "Report from your district", as: "আপোনাৰ জিলাৰ পৰা খবৰ দিয়ক" },
-  reporterBody: {
-    en: "SJ24 is building a network of district reporters across Assam. Send us your details and an editor will get in touch.",
-    as: "SJ24 এ অসমৰ সকলো জিলাত প্ৰতিবেদকৰ এক নেটৱৰ্ক গঢ়িছে। আপোনাৰ বিৱৰণ পঠিয়াওক, এজন সম্পাদকে যোগাযোগ কৰিব।",
-  },
-  joinTeam: { en: "Become a reporter", as: "প্ৰতিবেদক হওক" },
   preview: {
     en: "Design preview: every story on this site is sample text, not real news.",
     as: "ডিজাইনৰ নমুনা: এই ছাইটৰ সকলো বাতৰি নমুনা লেখা, প্ৰকৃত বাতৰি নহয়।",

@@ -10,7 +10,7 @@ import {
   stories,
   type Story,
 } from "@/lib/sj24/sample";
-import { ElasticDivider, LineFigure, PrintButton, RotatingWords } from "./client";
+import { ElasticDivider, LineFigure, NewsletterForm, PrintButton, RotatingWords } from "./client";
 import { AdSlot, Kicker, Picture, SectionHead, SiteShell, StoryCard, infoPages } from "./site";
 
 const SITE = "https://www.sj24.in";
@@ -193,11 +193,18 @@ export function HomeView({ lang }: { lang: Lang }) {
       <section className="sj-cta" aria-labelledby="cta-h">
         <div className="sj-wrap sj-stage sj-cta-inner">
           <div>
-            <h2 id="cta-h">{t(ui.reporterTitle, lang)}</h2>
-            <p>{t(ui.reporterBody, lang)}</p>
-            <Link href={href("/p/reporter-registration", lang)} className="sj-btn">
-              {t(ui.joinTeam, lang)}
-            </Link>
+            <p className="sj-eyebrow">{lang === "as" ? "দৈনিক বাতৰি-পত্ৰ" : "Daily newsletter"}</p>
+            <h2 id="cta-h">{lang === "as" ? "প্ৰতিদিনে ৰাতিপুৱা SJ24" : "SJ24, every morning"}</h2>
+            <p>
+              {lang === "as"
+                ? "অসম আৰু উত্তৰ-পূবৰ দিনটোৰ আটাইতকৈ গুৰুত্বপূৰ্ণ বাতৰি, প্ৰতিদিনে ৰাতিপুৱা এবাৰ, অসমীয়া বা ইংৰাজীত।"
+                : "The day's most important stories from Assam and the Northeast, once every morning, in English or Assamese."}
+            </p>
+            <NewsletterForm lang={lang} />
+            <p className="sj-news-small">
+              {lang === "as" ? "বিনামূলীয়া। আপোনাৰ ইমেইল কেৱল বাতৰি-পত্ৰৰ বাবে ব্যৱহাৰ কৰা হ'ব।" : "Free. We use your email only to send the newsletter."}{" "}
+              <Link href={href("/p/privacy", lang)}>{lang === "as" ? "গোপনীয়তা নীতি" : "Privacy Policy"}</Link>
+            </p>
           </div>
           <div className="sj-cta-figure">
             <LineFigure
