@@ -2,7 +2,8 @@ import Link from "next/link";
 import { href, t, ui, type Lang } from "@/lib/sj24/i18n";
 import { longDate, dateTime } from "@/lib/sj24/format";
 import { categories, categoryOf, districtOf, type Story } from "@/lib/sj24/sample";
-import { FoldingHeader, LiveClock, NavMore, ThemeToggle } from "./client";
+import { CrowdEntrance, FoldingHeader, LiveClock, NavMore, ThemeToggle } from "./client";
+import { Crowd } from "./crowd";
 
 // Placeholder addresses: replace with SJ24's real accounts before launch.
 const social = [
@@ -262,51 +263,72 @@ export const infoPages = [
 ] as const;
 
 function SiteFooter({ lang }: { lang: Lang }) {
+  const as = lang === "as";
   return (
     <footer className="sj-footer">
-      <div className="sj-tricolour" aria-hidden="true" />
-      <div className="sj-wrap sj-footer-grid">
-        <div className="sj-footer-brand">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/sj24-icon.png" alt="SJ24 logo" width={64} height={64} />
-          <p className="sj-footer-tag">{t(ui.tagline, lang)}</p>
-          <p>{t(ui.publisher, lang)}</p>
+      <div className="sj-footer-top">
+        <div className="sj-wrap sj-footer-grid">
+          <div className="sj-footer-brand">
+            <p className="sj-footer-name">
+              SJ24<span>.</span>
+            </p>
+            <p>{t(ui.publisher, lang)}</p>
+          </div>
+          <nav aria-label="Sections" className="sj-footer-col">
+            <h2>{as ? "শাখা" : "Sections"}</h2>
+            <ul className="sj-footer-inline">
+              {categories.slice(0, 8).map((c) => (
+                <li key={c.slug}>
+                  <Link href={href(`/category/${c.slug}`, lang)}>{t(c.name, lang)}</Link>
+                </li>
+              ))}
+              <li>
+                <Link href={href("/districts", lang)}>{t(ui.allDistricts, lang)}</Link>
+              </li>
+            </ul>
+          </nav>
+          <nav aria-label="About SJ24" className="sj-footer-col">
+            <h2>SJ24</h2>
+            <ul className="sj-footer-inline">
+              {infoPages.map(([slug, title]) => (
+                <li key={slug}>
+                  <Link href={href(`/p/${slug}`, lang)}>{title}</Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
+          <div className="sj-footer-col">
+            <h2>{as ? "অভিযোগ" : "Grievances"}</h2>
+            <p>
+              Grievance Officer: <em>name to be added</em>
+              <br />
+              Email: <em>to be added</em>
+            </p>
+          </div>
         </div>
-        <nav aria-label="Sections" className="sj-footer-col">
-          <h2>{lang === "as" ? "শাখা" : "Sections"}</h2>
-          <ul>
-            {categories.slice(0, 8).map((c) => (
-              <li key={c.slug}>
-                <Link href={href(`/category/${c.slug}`, lang)}>{t(c.name, lang)}</Link>
-              </li>
-            ))}
-            <li>
-              <Link href={href("/districts", lang)}>{t(ui.allDistricts, lang)}</Link>
-            </li>
-          </ul>
-        </nav>
-        <nav aria-label="About SJ24" className="sj-footer-col">
-          <h2>SJ24</h2>
-          <ul>
-            {infoPages.map(([slug, title]) => (
-              <li key={slug}>
-                <Link href={href(`/p/${slug}`, lang)}>{title}</Link>
-              </li>
-            ))}
-          </ul>
-        </nav>
-        <div className="sj-footer-col">
-          <h2>{lang === "as" ? "অভিযোগ" : "Grievances"}</h2>
-          <p>
-            Grievance Officer: <em>name to be added</em>
-            <br />
-            Email: <em>to be added</em>
+        <div className="sj-wrap sj-footer-close">
+          <p className="sj-footer-statement">
+            {as ? "এখন দেশ, অজস্ৰ কণ্ঠ।" : "One country, countless voices."}
           </p>
+          <a href="#main" className="sj-totop">
+            {as ? "ওপৰলৈ" : "Back to top"} <span aria-hidden="true">↑</span>
+          </a>
         </div>
       </div>
-      <p className="sj-wrap sj-copy">
-        © {new Date().getFullYear()} SATYAMEV JAYATE 24 · www.sj24.in · Gousamuh Gramaya Foundation
-      </p>
+
+      <div className="sj-footer-crowd" data-crowd>
+        <p className="sj-footer-mark" aria-hidden="true">
+          SJ24
+        </p>
+        <Crowd />
+      </div>
+
+      <div className="sj-footer-base">
+        <p className="sj-wrap">
+          © {new Date().getFullYear()} SATYAMEV JAYATE 24 · www.sj24.in · Gousamuh Gramaya Foundation
+        </p>
+      </div>
+      <CrowdEntrance />
     </footer>
   );
 }

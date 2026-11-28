@@ -231,6 +231,29 @@ export function NavMore({ label, current, children }: { label: string; current: 
   );
 }
 
+/** The footer crowd rises in once, the first time it scrolls into view. */
+export function CrowdEntrance() {
+  useEffect(() => {
+    const el = document.querySelector<HTMLElement>("[data-crowd]");
+    if (!el || !("IntersectionObserver" in window)) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    // Hidden only once JavaScript is running, so the crowd is never missing without it.
+    el.dataset.crowd = "ready";
+    const io = new IntersectionObserver(
+      ([e]) => {
+        if (e.isIntersecting) {
+          el.dataset.crowd = "in";
+          io.disconnect();
+        }
+      },
+      { threshold: 0.25 },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+  return null;
+}
+
 export function PrintButton({ label }: { label: string }) {
   return (
     <button type="button" className="sj-share-btn" onClick={() => window.print()}>
