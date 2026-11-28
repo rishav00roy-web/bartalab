@@ -2,7 +2,7 @@ import Link from "next/link";
 import { href, t, ui, type Lang } from "@/lib/sj24/i18n";
 import { longDate, dateTime } from "@/lib/sj24/format";
 import { categories, categoryOf, districtOf, type Story } from "@/lib/sj24/sample";
-import { CrowdVideo, FoldingHeader, LiveClock, NavMore, ThemeToggle } from "./client";
+import { CrowdVideo, FloatingNav, LiveClock, NavMore, ThemeToggle } from "./client";
 
 // Placeholder addresses: replace with SJ24's real accounts before launch.
 const social = [
@@ -161,7 +161,7 @@ export function SiteShell({
         </div>
       </div>
 
-      <FoldingHeader>
+      <header className="sj-header">
         <div className="sj-masthead">
           <div className="sj-wrap sj-masthead-inner">
             <Link href={href("/", lang)} className="sj-brand" aria-label="SATYAMEV JAYATE 24, home">
@@ -234,7 +234,53 @@ export function SiteShell({
             </NavMore>
           </div>
         </nav>
-      </FoldingHeader>
+      </header>
+
+      <FloatingNav label={lang === "as" ? "শাখা (সৰু)" : "Sections, compact"}>
+        <Link href={href("/", lang)} className="sj-float-mark" aria-label="SATYAMEV JAYATE 24, home">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/sj24-icon-96.png" alt="" width={30} height={30} />
+        </Link>
+        <ul className="sj-float-links">
+          {primary.map((c, i) => (
+            <li key={c.slug} data-pill-wide={i >= 2 || undefined}>
+              <Link href={href(`/category/${c.slug}`, lang)} aria-current={active === c.slug ? "page" : undefined}>
+                {t(c.name, lang)}
+              </Link>
+            </li>
+          ))}
+        </ul>
+        <NavMore label={lang === "as" ? "আৰু" : "More"} current={secondary.some((c) => c.slug === active)}>
+          <ul className="sj-more-list">
+            {primary.slice(2).map((c) => (
+              <li key={c.slug} data-pill-narrow>
+                <Link href={href(`/category/${c.slug}`, lang)}>{t(c.name, lang)}</Link>
+              </li>
+            ))}
+            {secondary.map((c) => (
+              <li key={c.slug}>
+                <Link href={href(`/category/${c.slug}`, lang)} aria-current={active === c.slug ? "page" : undefined}>
+                  {t(c.name, lang)}
+                </Link>
+              </li>
+            ))}
+            <li className="sj-more-districts">
+              <Link href={href("/districts", lang)}>{t(ui.allDistricts, lang)} →</Link>
+            </li>
+          </ul>
+        </NavMore>
+        <Link href={href("/search", lang)} className="sj-float-search" aria-label={t(ui.search, lang)}>
+          <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+            <path
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              d="m20 20-4.5-4.5M17 10.5a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0Z"
+            />
+          </svg>
+        </Link>
+      </FloatingNav>
 
       <main id="main" className="sj-main">
         {children}

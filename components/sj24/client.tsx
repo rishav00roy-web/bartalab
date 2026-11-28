@@ -65,22 +65,78 @@ export function ThemeToggle({ label }: { label: string }) {
 }
 
 /**
- * The header folds into a slim bar once the reader scrolls past the masthead,
- * and opens again at the top (after Annnimate's floating-navbar, without GSAP).
+ * Floating navbar (after Annnimate's floating-navbar, without GSAP). Once the
+ * masthead has scrolled away, a bar drops in and its edges close into a
+ * floating glass pill. Further down it hides while you scroll down and comes
+ * back as soon as you scroll up. Back at the top it opens out and leaves.
  */
-export function FoldingHeader({ children }: { children: React.ReactNode }) {
-  const [folded, setFolded] = useState(false);
+export function FloatingNav({ label, children }: { label: string; children: React.ReactNode }) {
+  const wrap = useRef<HTMLDivElement>(null);
+  const row = useRef<HTMLDivElement>(null);
+  const [docked, setDocked] = useState(false);
+  const [pill, setPill] = useState(false);
+  const [hidden, setHidden] = useState(false);
+
   useEffect(() => {
-    // Two thresholds, so the header doesn't flicker at the boundary.
-    const onScroll = () => setFolded((was) => (was ? window.scrollY > 60 : window.scrollY > 160));
+    const masthead = document.querySelector<HTMLElement>(".sj-header");
+    let lastY = window.scrollY;
+    let isDocked = false;
+    const dockAt = () => (masthead ? masthead.offsetTop + masthead.offsetHeight : 200);
+    // Pill width from its real content, so the edges close exactly onto it.
+    const measure = () => {
+      const r = row.current;
+      if (r && wrap.current) wrap.current.style.setProperty("--pill-w", `${r.scrollWidth + 12}px`);
+    };
+    const onScroll = () => {
+      const y = window.scrollY;
+      const at = dockAt();
+      // Hysteresis: it docks past the masthead and only undocks a little above it.
+      const next = isDocked ? y > at - 24 : y > at;
+      if (next !== isDocked) {
+        isDocked = next;
+        setDocked(next);
+        if (next) {
+          measure();
+          // Show the full-width bar for one frame, then let the edges close in.
+          requestAnimationFrame(() => requestAnimationFrame(() => setPill(true)));
+        } else {
+          setPill(false);
+        }
+      }
+      const delta = y - lastY;
+      if (Math.abs(delta) > 6) {
+        setHidden(isDocked && delta > 0 && y > at + 480);
+        lastY = y;
+      }
+    };
     onScroll();
+    measure();
     window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    window.addEventListener("resize", measure);
+    document.fonts?.ready.then(measure).catch(() => {});
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", measure);
+    };
   }, []);
+
   return (
-    <header className="sj-header" data-folded={folded || undefined}>
-      {children}
-    </header>
+    <div
+      ref={wrap}
+      className="sj-float"
+      data-docked={docked || undefined}
+      data-pill={pill || undefined}
+      data-hidden={hidden || undefined}
+      // Out of the tab order and hidden from screen readers until it is on screen.
+      inert={!docked}
+      aria-hidden={!docked}
+    >
+      <nav className="sj-float-pill" aria-label={label}>
+        <div ref={row} className="sj-float-row">
+          {children}
+        </div>
+      </nav>
+    </div>
   );
 }
 
