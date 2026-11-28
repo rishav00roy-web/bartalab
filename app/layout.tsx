@@ -24,7 +24,6 @@ export const metadata: Metadata = {
   title: { default: "SATYAMEV JAYATE 24 | The truth is rising.", template: "%s | SJ24" },
   description: "News from Assam, the Northeast, India and the world, in Assamese and English.",
   openGraph: { siteName: "SATYAMEV JAYATE 24", images: ["/sj24-icon.png"] },
-  icons: { icon: "/sj24-icon-96.png" },
 };
 
 export const viewport: Viewport = {

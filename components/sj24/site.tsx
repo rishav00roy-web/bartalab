@@ -1,8 +1,9 @@
 import Link from "next/link";
 import { href, t, ui, type Lang } from "@/lib/sj24/i18n";
 import { longDate, dateTime } from "@/lib/sj24/format";
-import { categories, categoryOf, districtOf, type Story } from "@/lib/sj24/sample";
-import { CrowdVideo, FloatingNav, LiveClock, NavMore, ThemeToggle } from "./client";
+import { categories, categoryOf, districtOf, type Category, type Story } from "@/lib/sj24/sample";
+import { CrowdVideo } from "./client/crowd-video";
+import { FloatingNav, LiveClock, NavMore, ThemeToggle } from "./client/header";
 
 // Placeholder addresses: replace with SJ24's real accounts before launch.
 const social = [
@@ -67,11 +68,11 @@ export function StoryCard({
   return (
     <article className={`sj-card sj-card-${variant}`}>
       {variant !== "text" && (
-        <Link href={url} tabIndex={-1} aria-hidden="true" className="sj-card-pic">
+        <Link href={url} tabIndex={-1} aria-hidden="true">
           <Picture story={story} lang={lang} size={variant === "row" ? "sm" : "md"} />
         </Link>
       )}
-      <div className="sj-card-body">
+      <div>
         <Kicker story={story} lang={lang} />
         <h3 className="sj-card-title">
           <Link href={url}>{t(story.headline, lang)}</Link>
@@ -112,6 +113,66 @@ function Wordmark() {
     <span className="sj-wordmark">
       Satyamev Jayate <span className="sj-wordmark-24">24</span>
     </span>
+  );
+}
+
+function SearchIcon() {
+  return (
+    <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+      <path
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        d="m20 20-4.5-4.5M17 10.5a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0Z"
+      />
+    </svg>
+  );
+}
+
+type NavProps = { lang: Lang; active?: string; /** How many sections stay in the bar on phones; the rest move into More. */ onPhone: number };
+
+/** The main sections as a row of links, used by the masthead and the floating pill. */
+function CategoryLinks({ lang, active, onPhone, className, withHome }: NavProps & { className: string; withHome?: boolean }) {
+  return (
+    <ul className={className}>
+      {withHome && (
+        <li>
+          <Link href={href("/", lang)} aria-current={active === "home" ? "page" : undefined}>
+            {lang === "as" ? "মুখ্য পৃষ্ঠা" : "Home"}
+          </Link>
+        </li>
+      )}
+      {primary.map((c, i) => (
+        <li key={c.slug} data-wide={i >= onPhone || undefined}>
+          <Link href={href(`/category/${c.slug}`, lang)} aria-current={active === c.slug ? "page" : undefined}>
+            {t(c.name, lang)}
+          </Link>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+/** "More": the other sections, plus on phones the main ones that left the bar. */
+function MoreMenu({ lang, active, onPhone }: NavProps) {
+  const link = (c: Category, narrow?: boolean) => (
+    <li key={c.slug} data-narrow={narrow || undefined}>
+      <Link href={href(`/category/${c.slug}`, lang)} aria-current={active === c.slug ? "page" : undefined}>
+        {t(c.name, lang)}
+      </Link>
+    </li>
+  );
+  return (
+    <NavMore label={lang === "as" ? "আৰু" : "More"} current={secondary.some((c) => c.slug === active)}>
+      <ul className="sj-more-list">
+        {primary.slice(onPhone).map((c) => link(c, true))}
+        {secondary.map((c) => link(c))}
+        <li className="sj-more-districts">
+          <Link href={href("/districts", lang)}>{t(ui.allDistricts, lang)} →</Link>
+        </li>
+      </ul>
+    </NavMore>
   );
 }
 
@@ -178,15 +239,7 @@ export function SiteShell({
               <input id="sj-q" name="q" type="search" placeholder={t(ui.search, lang)} className="sj-search-input" />
               {lang === "as" && <input type="hidden" name="lang" value="as" />}
               <button type="submit" className="sj-icon-btn" aria-label={t(ui.search, lang)}>
-                <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
-                  <path
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    d="m20 20-4.5-4.5M17 10.5a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0Z"
-                  />
-                </svg>
+                <SearchIcon />
               </button>
             </form>
           </div>
@@ -194,44 +247,8 @@ export function SiteShell({
 
         <nav className="sj-nav" aria-label="Sections">
           <div className="sj-wrap sj-nav-inner">
-            <ul className="sj-nav-list">
-              <li>
-                <Link href={href("/", lang)} aria-current={active === "home" ? "page" : undefined}>
-                  {lang === "as" ? "মুখ্য পৃষ্ঠা" : "Home"}
-                </Link>
-              </li>
-              {primary.map((c, i) => (
-                <li key={c.slug} data-wide={i >= 3 || undefined}>
-                  <Link
-                    href={href(`/category/${c.slug}`, lang)}
-                    aria-current={active === c.slug ? "page" : undefined}
-                  >
-                    {t(c.name, lang)}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-            <NavMore label={lang === "as" ? "আৰু" : "More"} current={secondary.some((c) => c.slug === active)}>
-              <ul className="sj-more-list">
-                {primary.slice(3).map((c) => (
-                  <li key={c.slug} data-narrow>
-                    <Link href={href(`/category/${c.slug}`, lang)} aria-current={active === c.slug ? "page" : undefined}>
-                      {t(c.name, lang)}
-                    </Link>
-                  </li>
-                ))}
-                {secondary.map((c) => (
-                  <li key={c.slug}>
-                    <Link href={href(`/category/${c.slug}`, lang)} aria-current={active === c.slug ? "page" : undefined}>
-                      {t(c.name, lang)}
-                    </Link>
-                  </li>
-                ))}
-                <li className="sj-more-districts">
-                  <Link href={href("/districts", lang)}>{t(ui.allDistricts, lang)} →</Link>
-                </li>
-              </ul>
-            </NavMore>
+            <CategoryLinks lang={lang} active={active} onPhone={3} className="sj-nav-list" withHome />
+            <MoreMenu lang={lang} active={active} onPhone={3} />
           </div>
         </nav>
       </header>
@@ -241,44 +258,10 @@ export function SiteShell({
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/sj24-icon-96.png" alt="" width={30} height={30} />
         </Link>
-        <ul className="sj-float-links">
-          {primary.map((c, i) => (
-            <li key={c.slug} data-pill-wide={i >= 2 || undefined}>
-              <Link href={href(`/category/${c.slug}`, lang)} aria-current={active === c.slug ? "page" : undefined}>
-                {t(c.name, lang)}
-              </Link>
-            </li>
-          ))}
-        </ul>
-        <NavMore label={lang === "as" ? "আৰু" : "More"} current={secondary.some((c) => c.slug === active)}>
-          <ul className="sj-more-list">
-            {primary.slice(2).map((c) => (
-              <li key={c.slug} data-pill-narrow>
-                <Link href={href(`/category/${c.slug}`, lang)}>{t(c.name, lang)}</Link>
-              </li>
-            ))}
-            {secondary.map((c) => (
-              <li key={c.slug}>
-                <Link href={href(`/category/${c.slug}`, lang)} aria-current={active === c.slug ? "page" : undefined}>
-                  {t(c.name, lang)}
-                </Link>
-              </li>
-            ))}
-            <li className="sj-more-districts">
-              <Link href={href("/districts", lang)}>{t(ui.allDistricts, lang)} →</Link>
-            </li>
-          </ul>
-        </NavMore>
+        <CategoryLinks lang={lang} active={active} onPhone={2} className="sj-float-links" />
+        <MoreMenu lang={lang} active={active} onPhone={2} />
         <Link href={href("/search", lang)} className="sj-float-search" aria-label={t(ui.search, lang)}>
-          <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
-            <path
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              d="m20 20-4.5-4.5M17 10.5a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0Z"
-            />
-          </svg>
+          <SearchIcon />
         </Link>
       </FloatingNav>
 
@@ -311,7 +294,7 @@ function SiteFooter({ lang }: { lang: Lang }) {
   const as = lang === "as";
   return (
     <footer className="sj-footer">
-      <div className="sj-footer-top">
+      <div>
         <div className="sj-wrap sj-footer-grid">
           <div className="sj-footer-brand">
             <p className="sj-footer-name">

@@ -10,7 +10,10 @@ import {
   stories,
   type Story,
 } from "@/lib/sj24/sample";
-import { ElasticDivider, LineFigure, NewsletterForm, PrintButton, RotatingWords } from "./client";
+import { LineFigure } from "./client/line-figure";
+import { ElasticDivider, RotatingWords } from "./client/motion";
+import { NewsletterForm } from "./client/newsletter-form";
+import { PrintButton } from "./client/print-button";
 import { AdSlot, Kicker, Picture, SectionHead, SiteShell, StoryCard, infoPages } from "./site";
 
 const SITE = "https://www.sj24.in";
@@ -111,7 +114,7 @@ export function HomeView({ lang }: { lang: Lang }) {
             />
             <p className="sj-stage-note">{lang === "as" ? "এটা নিউজৰুম · ৩৫খন জিলা" : "One newsroom · 35 districts"}</p>
           </div>
-          <div className="sj-districts-copy">
+          <div>
             <SectionHead id="dist-h" title={t(ui.districts, lang)} more="/districts" lang={lang} />
             <ul className="sj-chips">
               {districts.slice(0, 14).map((d) => (
@@ -263,7 +266,7 @@ export function ArticleView({ story, lang }: { story: Story; lang: Lang }) {
             <Picture story={story} lang={lang} size="lg" />
             <figcaption>
               {story.caption ? t(story.caption, lang) : lang === "as" ? "নমুনা ছবি" : "Sample picture"}
-              <span className="sj-credit"> · {lang === "as" ? "ছবি" : "Photo"}: {story.credit ?? "SJ24"}</span>
+              <span> · {lang === "as" ? "ছবি" : "Photo"}: {story.credit ?? "SJ24"}</span>
             </figcaption>
           </figure>
 

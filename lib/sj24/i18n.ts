@@ -17,11 +17,9 @@ export function href(path: string, lang: Lang) {
 
 export const ui = {
   tagline: { en: "The truth is rising.", as: "এখন দেশ, অজস্ৰ কণ্ঠ।" },
-  breaking: { en: "Breaking", as: "শেহতীয়া" },
   search: { en: "Search news", as: "বাতৰি বিচাৰক" },
   latest: { en: "Latest news", as: "শেহতীয়া বাতৰি" },
   mostRead: { en: "Most read", as: "সৰ্বাধিক পঠিত" },
-  trending: { en: "Trending", as: "আলোচিত" },
   districts: { en: "District news", as: "জিলাৰ বাতৰি" },
   allDistricts: { en: "All districts", as: "সকলো জিলা" },
   northeast: { en: "Across the Northeast", as: "উত্তৰ-পূবৰ বাতৰি" },
@@ -36,7 +34,6 @@ export const ui = {
   print: { en: "Print", as: "প্ৰিণ্ট" },
   related: { en: "Related news", as: "সম্পৰ্কীয় বাতৰি" },
   correction: { en: "Correction", as: "সংশোধন" },
-  sponsored: { en: "Sponsored", as: "পৃষ্ঠপোষকতা" },
   advert: { en: "Advertisement", as: "বিজ্ঞাপন" },
   preview: {
     en: "Design preview: every story on this site is sample text, not real news.",

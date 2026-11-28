@@ -115,7 +115,7 @@
   display: flex;
   align-items: center;
   gap: 16px;
-  min-height: 44px;
+  min-height: 48px;
 }
 .sj-clock {
   font-variant-numeric: tabular-nums;
@@ -151,9 +151,6 @@
   font-weight: 700;
   box-shadow: inset 0 -2px 0 var(--ink);
 }
-.sj-util-inner {
-  min-height: 48px;
-}
 .sj-icon-btn {
   display: grid;
   place-items: center;
@@ -170,7 +167,7 @@
   background: var(--soft);
 }
 
-/* Sticky header ---------------------------------------------------------- */
+/* Masthead --------------------------------------------------------------- */
 .sj-header {
   position: relative;
   background: var(--bg);
@@ -482,9 +479,6 @@
 }
 .sj-float .sj-more-panel a {
   color: var(--ink);
-}
-.sj-more-list [data-pill-narrow] {
-  display: none;
 }
 
 /* Pictures: flat neutral placeholders until real photos arrive ----------- */
@@ -1541,20 +1535,13 @@
   }
 }
 @media (max-width: 640px) {
-  .sj-float-links [data-pill-wide] {
-    display: none;
-  }
-  .sj-float .sj-more-list [data-pill-narrow] {
-    display: list-item;
-  }
-  .sj-float .sj-more-list [data-narrow] {
-    display: none;
-  }
+  /* Phones: sections marked data-wide leave the bar and appear in More. */
   .sj-float-links a,
   .sj-float .sj-more-menu summary {
     padding: 0 10px;
   }
-  .sj-nav-list [data-wide] {
+  .sj-nav-list [data-wide],
+  .sj-float-links [data-wide] {
     display: none;
   }
   .sj-more-list [data-narrow] {

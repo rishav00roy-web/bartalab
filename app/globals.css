@@ -1,11 +1,11 @@
-/* Hallmark · shape: app screen · genre: modern-minimal · theme: custom, light only (from the Bartalab logo: deep indigo, one orange signal) · signature: the announcement card, media set full width
- * critique: an internal feed must feel calm and trustworthy; indigo carries the chrome, orange marks only the primary action and your own reaction
- * scope: app · v2.0.0 */
+/* SJ24 newsroom (the signed-in screens: /newsroom, /members, /profile, /login).
+ * Calm and plain: SJ24 navy carries the chrome, one orange marks the primary
+ * action and your own reaction. The public site's styles are in sj24.css. */
 
 :root {
-  --brand: #100b67;
-  --brand-hover: #1e1890;
-  --brand-soft: #f0effa;
+  --brand: #0b1d4d;
+  --brand-hover: #14307c;
+  --brand-soft: #eef1f8;
   --signal: #f38023;
   --signal-ink: #8a3f00;
   --bg: #f9f9fd;
@@ -657,8 +657,8 @@ time,
   gap: 1.25rem;
 }
 .auth-logo {
-  width: 100%;
-  max-width: 220px;
+  width: 72px;
+  max-width: 72px;
   height: auto;
   margin: 0 auto;
 }

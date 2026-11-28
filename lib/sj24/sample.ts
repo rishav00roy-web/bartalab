@@ -81,7 +81,6 @@ export type Story = {
   tags: string[];
   breaking?: boolean;
   reads: number;
-  sponsored?: boolean;
   /** Placeholder picture tint until real photos exist. */
   tone: "navy" | "red" | "saffron" | "green" | "teal" | "stone";
 };
@@ -352,7 +351,6 @@ export const stories: Story[] = seeds.map((s, i) => ({
 
 export const byDate = [...stories].sort((a, b) => b.publishedAt.localeCompare(a.publishedAt));
 export const mostRead = [...stories].sort((a, b) => b.reads - a.reads).slice(0, 5);
-export const breaking = byDate.filter((s) => s.breaking);
 
 export function categoryOf(slug: string) {
   return categories.find((c) => c.slug === slug);

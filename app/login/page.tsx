@@ -66,11 +66,10 @@ export default function LoginPage() {
   return (
     <main className="auth">
       <div className="card auth-card">
-        <picture>
-          <img src="/logo-wordmark.png" alt="Bartalab" width={1380} height={370} className="auth-logo" />
-        </picture>
-        <h1>{signup ? "Join your organization's news" : forgot ? "Reset your password" : "Sign in to Bartalab"}</h1>
-        <p className="lede">News and updates from your organization.</p>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src="/sj24-icon.png" alt="SJ24" width={72} height={72} className="auth-logo" />
+        <h1>{signup ? "Join the SJ24 newsroom" : forgot ? "Reset your password" : "Sign in to the SJ24 newsroom"}</h1>
+        <p className="lede">For SJ24 reporters and editors.</p>
 
         <form className="auth-form" onSubmit={submit}>
           {signup && (

@@ -17,9 +17,10 @@ export function TopBar({
   return (
     <header className="topbar">
       <div className="topbar-inner">
-        <Link href="/newsroom" className="brand" aria-label="Bartalab home">
-          <img src="/mark.png" alt="" width={32} height={32} />
-          <span className="brand-name">Bartalab</span>
+        <Link href="/newsroom" className="brand" aria-label="SJ24 newsroom home">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/sj24-icon-96.png" alt="" width={32} height={32} />
+          <span className="brand-name">SJ24 Newsroom</span>
         </Link>
         {profile.approved && (
           <nav className="topnav" aria-label="Main">
