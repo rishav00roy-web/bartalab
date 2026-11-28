@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { href, t, ui, type Lang } from "@/lib/sj24/i18n";
 import { longDate, dateTime } from "@/lib/sj24/format";
-import { breaking, categories, categoryOf, districtOf, type Story } from "@/lib/sj24/sample";
+import { categories, categoryOf, districtOf, type Story } from "@/lib/sj24/sample";
 import { FoldingHeader, LiveClock, NavMore, RevealOnScroll, ThemeToggle } from "./client";
 
 // Placeholder addresses: replace with SJ24's real accounts before launch.
@@ -111,36 +111,6 @@ function Wordmark() {
     <span className="sj-wordmark">
       Satyamev Jayate <span className="sj-wordmark-24">24</span>
     </span>
-  );
-}
-
-function Ticker({ lang }: { lang: Lang }) {
-  const items = breaking.length ? breaking : [];
-  if (!items.length) return null;
-  const list = (hidden: boolean) => (
-    <ul className="sj-ticker-list" aria-hidden={hidden || undefined}>
-      {items.map((s) => (
-        <li key={s.slug}>
-          <Link href={href(`/news/${s.slug}`, lang)} tabIndex={hidden ? -1 : undefined}>
-            {t(s.headline, lang)}
-          </Link>
-        </li>
-      ))}
-    </ul>
-  );
-  return (
-    <section className="sj-ticker" aria-label={t(ui.breaking, lang)}>
-      <span className="sj-ticker-label">
-        <span className="sj-live-dot" aria-hidden="true" />
-        {t(ui.breaking, lang)}
-      </span>
-      <div className="sj-ticker-track">
-        <div className="sj-ticker-move">
-          {list(false)}
-          {list(true)}
-        </div>
-      </div>
-    </section>
   );
 }
 
@@ -263,7 +233,6 @@ export function SiteShell({
             </NavMore>
           </div>
         </nav>
-        <Ticker lang={lang} />
       </FoldingHeader>
 
       <main id="main" className="sj-main">
